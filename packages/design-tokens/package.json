@@ -1,0 +1,30 @@
+{
+  "name": "@absolo/design-tokens",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Design tokens (CSS variables, theme JSON) shared by every Absolo frontend.",
+  "absolo": {
+    "visibility": "public",
+    "publish": "future",
+    "extractTo": "@absolo/design-tokens (npm)"
+  },
+  "exports": {
+    ".": "./dist/tokens.js",
+    "./css": "./src/tokens.css",
+    "./tailwind": "./dist/tailwind.js"
+  },
+  "main": "./dist/tokens.js",
+  "types": "./dist/tokens.d.ts",
+  "files": ["dist", "src/tokens.css"],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo"
+  },
+  "devDependencies": {
+    "@absolo/tsconfig": "workspace:*",
+    "typescript": "^5.7.0"
+  }
+}

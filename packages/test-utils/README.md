@@ -1,7 +1,13 @@
-# test-utils
+# @absolo/test-utils
 
-Shared testing helpers (factories, MSW, fixtures).
+Shared testing helpers used by every package and app:
 
-Plan reference: `../docs/plans/30`- (search docs/plans/ for the matching `30-*-d1e00e.md` file).
+- `factories/` — domain-object factories (User, Org, Project, Environment, ConfigEntry).
+- `vitest.preset.ts` — base Vitest config with sane defaults (coverage thresholds, glob includes).
 
-Status: scaffold (no source yet).
+```ts
+import { makeProject, makeOrg } from '@absolo/test-utils';
+import { vitestPreset } from '@absolo/test-utils/vitest';
+```
+
+Plan reference: [`../../docs/plans/30-testing-ci-cd-d1e00e.md`](../../docs/plans/30-testing-ci-cd-d1e00e.md).

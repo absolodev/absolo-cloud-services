@@ -1,0 +1,22 @@
+{
+  "name": "@absolo/fonts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Self-hosted Inter and JetBrains Mono via fontsource. Single import to wire everything.",
+  "absolo": {
+    "visibility": "public",
+    "publish": "future",
+    "extractTo": "@absolo/fonts (npm)"
+  },
+  "exports": {
+    "./inter": "./src/inter.css",
+    "./jetbrains-mono": "./src/jetbrains-mono.css",
+    "./all": "./src/all.css"
+  },
+  "files": ["src"],
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.1.0",
+    "@fontsource-variable/jetbrains-mono": "^5.1.0"
+  }
+}

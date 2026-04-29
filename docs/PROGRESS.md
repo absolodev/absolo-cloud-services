@@ -32,39 +32,43 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` not started · `[s]` skipped/de
 - [~] Per-plan **Progress** sections added to plans being actively worked on (00, 04, 05, 08, 41).
 - [ ] Per-plan **Progress** sections added to remaining plans (will happen as each subsystem starts).
 
+### Architecture decisions
+- [x] Repo strategy: monorepo with public/private extraction discipline (plan 40 §2-3).
+- [x] Each `package.json` tagged with `absolo.visibility` (`public`/`private`) — design-tokens / icons / fonts = public; eslint-config / tsconfig / test-utils = private.
+- [ ] CI lint enforcing `public-only depends on public-only` rule.
+
 ### Shared TS packages (`packages/`)
-- [x] Folder scaffolding with READMEs.
 - [x] `tsconfig` — shared tsconfig presets (base / library / next / vite-react / node).
 - [x] `eslint-config` — shared flat ESLint config (base / react / next / node).
-- [x] `design-tokens` — CSS variables, dark/light themes.
+- [x] `design-tokens` — CSS variables, dark/light themes, Tailwind preset.
 - [x] `icons` — Lucide re-exports + brand mark placeholder.
 - [x] `fonts` — Inter + JetBrains Mono via fontsource.
-- [x] `ui` — shadcn-derived component library (Button, Input, Card, Badge, Dialog, Toast).
-- [x] `test-utils` — Vitest config + factories scaffold.
-- [x] `contracts` — OpenAPI YAML + Zod schemas (auth, projects, environments, env-vars).
-- [x] `sdk-ts` — TypeScript SDK (typed fetch client based on contracts).
+- [x] `test-utils` — Vitest preset + factories.
+- [ ] `ui` — shadcn-derived component library (Button, Input, Card, Badge, Dialog, Toast). **Next.**
+- [ ] `contracts` — OpenAPI YAML + Zod schemas (auth, projects, environments, env-vars). **Next.**
+- [ ] `sdk-ts` — TypeScript SDK (typed fetch client generated from contracts).
 
 ### Frontends (`apps/`)
-- [x] `marketing` — Next.js 15 (App Router): home, pricing, docs portal shell.
-- [x] `dashboard` — Vite + React 19 + TanStack Router/Query: sign-in shell, projects list, env-vars editor mock UI.
-- [x] `admin` — Vite + React 19: fleet shell, abuse shell.
+- [ ] `marketing` — Next.js 15 (App Router): home, pricing, docs portal shell.
+- [ ] `dashboard` — Vite + React 19 + TanStack Router/Query: sign-in shell, projects list, env-vars editor.
+- [ ] `admin` — Vite + React 19: fleet shell, abuse shell.
 - [ ] `status` — Next.js public status page (deferred to Phase 1.5).
 
 ### Control plane (`services/control-plane/`)
-- [x] NestJS 11 app skeleton (Fastify adapter, modular monolith layout).
-- [x] Modules scaffolded: `iam`, `projects`, `environments`, `env-vars`, `health`.
-- [x] Drizzle ORM schemas drafted: `users`, `orgs`, `projects`, `environments`, `config_entries`, `config_versions`.
-- [x] Health endpoints (`/healthz`, `/readyz`).
-- [x] OpenAPI emission via `@nestjs/swagger`.
+- [ ] NestJS 11 app skeleton (Fastify adapter, modular monolith layout).
+- [ ] Modules scaffolded: `iam`, `projects`, `environments`, `env-vars`, `health`.
+- [ ] Drizzle ORM schemas drafted: `users`, `orgs`, `projects`, `environments`, `config_entries`, `config_versions`.
+- [ ] Health endpoints (`/healthz`, `/readyz`).
+- [ ] OpenAPI emission via `@nestjs/swagger`.
 - [ ] Real auth (JWT/PASETO + Argon2 password hashing).
 - [ ] DB migrations runner integrated.
 - [ ] Stripe sandbox scaffolding.
 - [ ] Outbox + saga base.
 
 ### Local dev infrastructure
-- [x] `docker-compose.yml` for local Postgres 17 + Redis 7 + NATS JetStream + MailHog (smtp catcher).
-- [x] `.env.example` for control-plane (DB url, NATS, JWT secrets).
-- [x] Root `pnpm dev` runs all frontends + control plane via Turborepo.
+- [ ] `docker-compose.yml` for local Postgres 17 + Redis 7 + NATS JetStream + MailHog (smtp catcher).
+- [ ] `.env.example` for control-plane (DB url, NATS, JWT secrets).
+- [ ] Root `pnpm dev` runs all frontends + control plane via Turborepo.
 - [ ] Seed data + dev fixtures.
 - [ ] k3d local cluster recipe (Phase 1).
 

@@ -2,6 +2,65 @@
 
 The concrete directory layout for the project repo, with READMEs in every leaf describing what lives there. Used as the blueprint for scaffolding before any code is written.
 
+## Why one repo (not many)
+
+The platform has tightly-coupled contracts that would otherwise require coordinated multi-repo releases:
+
+- An API change in `packages/contracts/` ripples through **control-plane**, **dashboard**, **admin**, **CLI**, **SDK** — atomic in one PR here, 5+ PRs across 5+ repos otherwise.
+- A design-token change must stay consistent across **marketing**, **dashboard**, **admin**.
+- A config-entry schema change (plan 41) touches **control-plane** + **host-agent** (Rust) + **dashboard** + **CLI**.
+- ArgoCD deploys all services from one image registry with one version-skew policy (plan 38) — easier with one source of truth.
+
+For multi-developer scaling, the monorepo wins because:
+- Path-based `CODEOWNERS` enforces team boundaries without inter-repo PR ping-pong.
+- Turborepo + Cargo workspace only rebuild/retest what changed (`turbo run --filter=...[origin/main]`).
+- One pnpm lockfile + one `Cargo.lock` + one Renovate config = one dependency-upgrade workflow.
+- New engineers clone one repo and run `pnpm install && cargo build`.
+
+This mirrors how Vercel, Stripe, Shopify, GitLab, and Linear structure their core platforms.
+
+## Public vs private boundary (extraction-ready discipline)
+
+Some components will eventually be published to npm or moved to public repos (CLI, SDKs, templates). The repo is structured so this can be done with `git filter-repo --subdirectory-filter` — no refactor, no week-long migration.
+
+**Rule**: every directory is tagged in its `package.json` (TS) or `Cargo.toml` (Rust) metadata as either `public` or `private`. CI enforces:
+
+1. **`public` packages may only depend on:** other `public` packages, third-party packages from npm/crates.io, and published artifacts (e.g., the public REST API). They MUST NOT import any `private` package, even transitively.
+2. **`private` packages may depend on anything.**
+
+| Path | Visibility | Future home |
+|---|---|---|
+| `crates/cli/` | `public` | Eventually `absolo/cli` (own repo); only consumes public REST API + published `@absolo/sdk` from npm. |
+| `packages/contracts/` | `public` | OpenAPI/Zod schemas; published as `@absolo/contracts` on npm + mirrored to `absolo/api-spec`. |
+| `packages/sdk-ts/` | `public` | Generated from `contracts`; published as `@absolo/sdk` on npm; can mirror to `absolo/sdk-js`. |
+| `packages/design-tokens/` | `public` | Published as `@absolo/design-tokens` (so external partners can theme integrations). |
+| `packages/icons/` | `public` | Published as `@absolo/icons`. |
+| `packages/fonts/` | `public` | Published as `@absolo/fonts`. |
+| `packages/ui/` | `public` (later) | Initially `private` until API stabilises; published as `@absolo/ui` once locked. |
+| `packages/eslint-config/`, `packages/tsconfig/`, `packages/test-utils/` | `private` | Internal tooling only. |
+| `templates/*` | `public` | Each template is self-contained (Dockerfile + template.yaml + hooks); mirrored to `absolo/templates-<name>` or one `absolo/templates`. |
+| `apps/marketing/`, `apps/dashboard/`, `apps/admin/`, `apps/status/` | `private` | Internal frontends; never extracted. |
+| `services/control-plane/` | `private` | Internal backend; never extracted. |
+| `crates/host-agent/`, `edge-proxy/`, `builder-worker/`, `metering-aggregator/`, `web-ssh-gateway/`, `log-shipper/` | `private` | Internal services; never extracted. |
+| `crates/shared/` | `private` | Internal Rust workspace lib; CLI does NOT depend on it (CLI uses its own minimal types or generated bindings from `contracts`). |
+| `infra/*` | `private` (mostly) | Helm charts may be published to `charts.absolo.cloud` OCI registry for Enterprise BYO (plan 39). |
+
+### Extraction procedure (when we choose to publish CLI / SDK / templates)
+
+1. CI already publishes the artifact (npm package, container image, Helm chart) — that's the primary distribution path. **Most "public" components never need a separate git repo.**
+2. If a separate **git history** is desired (e.g., for community PRs against the CLI):
+   ```bash
+   git clone --no-local . /tmp/absolo-cli-extract
+   cd /tmp/absolo-cli-extract
+   git filter-repo --subdirectory-filter crates/cli
+   git remote add origin git@github.com:absolo/cli.git
+   git push -u origin main
+   ```
+3. Set up a one-way sync (GitHub Action) from monorepo → public repo on every merge to `main` that touches the subtree. Source of truth stays in monorepo.
+4. PRs from the community land in the public repo and are reverse-merged via cherry-pick or scheduled sync.
+
+This is the same model Google uses for Bazel, Meta uses for React, and Shopify uses for their CLI.
+
 ## Top-level layout
 ```
 absolo-cloud-services/
@@ -183,6 +242,7 @@ These come in Phase 0 implementation per `35-roadmap-phases-d1e00e.md`.
 - Every plan file referenced in master must exist.
 
 ## Open items
-- Whether `services/` and `crates/` should merge into a single `services/` (with a sub-naming convention by language) — keeping them separate is more idiomatic for the Rust workspace.
-- Whether `templates/` should be its own repo at some point (depends on if we open-source templates) — keep in monorepo for now.
+- Whether `services/` and `crates/` should merge into a single `services/` (with a sub-naming convention by language) — keeping them separate is more idiomatic for the Rust workspace and we'll keep them split.
+- Whether to open-source templates from day one or after Phase 1 stabilises — does not change directory layout (already extraction-ready); only changes the timing of the public mirror.
 - Devcontainer (`tools/devcontainer/`) phasing — defer to Phase 0 mid-point once language toolchains are stable.
+- CI lint job that enforces the `public → public-only` import rule (TS via `eslint-plugin-import` resolver, Rust via `cargo-deny` or a custom workspace check).

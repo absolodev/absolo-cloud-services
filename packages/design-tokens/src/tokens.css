@@ -1,0 +1,161 @@
+/* Absolo design tokens — single source of truth for color, spacing, typography, motion.
+ * Plan reference: ../../docs/plans/04-design-system-d1e00e.md
+ *
+ * Color philosophy: dark-first, high contrast, DigitalOcean-modern.
+ * - Neutrals are slightly cool (slate/zinc-leaning) for a technical feel.
+ * - Primary = vivid blue (Absolo Blue) for actionable surfaces.
+ * - Accent = electric violet for marketing flourishes only.
+ * Use OKLCH for perceptual uniformity across themes.
+ */
+
+@layer absolo-tokens {
+  :root {
+    /* Brand */
+    --absolo-brand-50:  oklch(96% 0.03 260);
+    --absolo-brand-100: oklch(92% 0.06 260);
+    --absolo-brand-200: oklch(85% 0.10 260);
+    --absolo-brand-300: oklch(76% 0.14 260);
+    --absolo-brand-400: oklch(68% 0.17 260);
+    --absolo-brand-500: oklch(60% 0.20 260);
+    --absolo-brand-600: oklch(53% 0.21 260);
+    --absolo-brand-700: oklch(46% 0.20 260);
+    --absolo-brand-800: oklch(38% 0.17 260);
+    --absolo-brand-900: oklch(30% 0.14 260);
+    --absolo-brand-950: oklch(22% 0.10 260);
+
+    /* Accent */
+    --absolo-accent-500: oklch(65% 0.24 305);
+
+    /* Semantic */
+    --absolo-success: oklch(70% 0.18 150);
+    --absolo-warning: oklch(78% 0.16 80);
+    --absolo-danger:  oklch(64% 0.22 25);
+    --absolo-info:    oklch(70% 0.16 230);
+
+    /* Spacing scale (rem; 1 unit = 0.25rem = 4px) */
+    --absolo-space-0: 0;
+    --absolo-space-1: 0.25rem;
+    --absolo-space-2: 0.5rem;
+    --absolo-space-3: 0.75rem;
+    --absolo-space-4: 1rem;
+    --absolo-space-5: 1.25rem;
+    --absolo-space-6: 1.5rem;
+    --absolo-space-8: 2rem;
+    --absolo-space-10: 2.5rem;
+    --absolo-space-12: 3rem;
+    --absolo-space-16: 4rem;
+    --absolo-space-20: 5rem;
+    --absolo-space-24: 6rem;
+
+    /* Radii */
+    --absolo-radius-sm: 0.25rem;
+    --absolo-radius-md: 0.5rem;
+    --absolo-radius-lg: 0.75rem;
+    --absolo-radius-xl: 1rem;
+    --absolo-radius-2xl: 1.5rem;
+    --absolo-radius-full: 9999px;
+
+    /* Typography (font-family vars filled by @absolo/fonts) */
+    --absolo-font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --absolo-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --absolo-text-xs: 0.75rem;
+    --absolo-text-sm: 0.875rem;
+    --absolo-text-base: 1rem;
+    --absolo-text-lg: 1.125rem;
+    --absolo-text-xl: 1.25rem;
+    --absolo-text-2xl: 1.5rem;
+    --absolo-text-3xl: 1.875rem;
+    --absolo-text-4xl: 2.25rem;
+    --absolo-text-5xl: 3rem;
+
+    /* Motion */
+    --absolo-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+    --absolo-ease-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);
+    --absolo-duration-fast: 120ms;
+    --absolo-duration-base: 200ms;
+    --absolo-duration-slow: 320ms;
+
+    /* Elevation */
+    --absolo-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.04);
+    --absolo-shadow-md: 0 4px 8px -2px rgb(0 0 0 / 0.06), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+    --absolo-shadow-lg: 0 12px 24px -8px rgb(0 0 0 / 0.10), 0 6px 12px -4px rgb(0 0 0 / 0.06);
+    --absolo-shadow-xl: 0 24px 48px -12px rgb(0 0 0 / 0.18);
+
+    /* Z-index */
+    --absolo-z-dropdown: 100;
+    --absolo-z-sticky: 200;
+    --absolo-z-overlay: 300;
+    --absolo-z-modal: 400;
+    --absolo-z-toast: 500;
+    --absolo-z-tooltip: 600;
+  }
+
+  /* Light theme (default) */
+  :root, [data-theme='light'] {
+    color-scheme: light;
+    --absolo-bg:           oklch(99%  0.01 260);
+    --absolo-bg-subtle:    oklch(97%  0.01 260);
+    --absolo-bg-muted:     oklch(94%  0.01 260);
+    --absolo-bg-elevated:  oklch(100% 0     0);
+    --absolo-fg:           oklch(20%  0.02 260);
+    --absolo-fg-muted:     oklch(45%  0.02 260);
+    --absolo-fg-subtle:    oklch(60%  0.02 260);
+    --absolo-border:       oklch(90%  0.01 260);
+    --absolo-border-strong:oklch(80%  0.02 260);
+    --absolo-ring:         var(--absolo-brand-500);
+  }
+
+  /* Dark theme — applied via [data-theme='dark'] OR system prefers-color-scheme */
+  [data-theme='dark'] {
+    color-scheme: dark;
+    --absolo-bg:           oklch(14%  0.02 260);
+    --absolo-bg-subtle:    oklch(17%  0.02 260);
+    --absolo-bg-muted:     oklch(21%  0.02 260);
+    --absolo-bg-elevated:  oklch(24%  0.02 260);
+    --absolo-fg:           oklch(96%  0.01 260);
+    --absolo-fg-muted:     oklch(72%  0.02 260);
+    --absolo-fg-subtle:    oklch(55%  0.02 260);
+    --absolo-border:       oklch(28%  0.02 260);
+    --absolo-border-strong:oklch(38%  0.02 260);
+    --absolo-ring:         var(--absolo-brand-400);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      color-scheme: dark;
+      --absolo-bg:           oklch(14%  0.02 260);
+      --absolo-bg-subtle:    oklch(17%  0.02 260);
+      --absolo-bg-muted:     oklch(21%  0.02 260);
+      --absolo-bg-elevated:  oklch(24%  0.02 260);
+      --absolo-fg:           oklch(96%  0.01 260);
+      --absolo-fg-muted:     oklch(72%  0.02 260);
+      --absolo-fg-subtle:    oklch(55%  0.02 260);
+      --absolo-border:       oklch(28%  0.02 260);
+      --absolo-border-strong:oklch(38%  0.02 260);
+      --absolo-ring:         var(--absolo-brand-400);
+    }
+  }
+}
+
+/* Base reset (opt-in via @import "@absolo/design-tokens/css"; in app entry) */
+@layer absolo-base {
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; tab-size: 4; }
+  body {
+    margin: 0;
+    background: var(--absolo-bg);
+    color: var(--absolo-fg);
+    font-family: var(--absolo-font-sans);
+    font-size: var(--absolo-text-base);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a { color: inherit; }
+  code, pre, kbd, samp { font-family: var(--absolo-font-mono); }
+  :focus-visible {
+    outline: 2px solid var(--absolo-ring);
+    outline-offset: 2px;
+    border-radius: var(--absolo-radius-sm);
+  }
+}

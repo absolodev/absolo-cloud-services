@@ -1,7 +1,12 @@
-# fonts
+# @absolo/fonts
 
-Self-hosted Inter + JetBrains Mono via fontsource.
+Self-hosted Inter (variable) + JetBrains Mono (variable) via [fontsource](https://fontsource.org/).
 
-Plan reference: `../docs/plans/04`- (search docs/plans/ for the matching `04-*-d1e00e.md` file).
+```css
+/* In your app's root CSS */
+@import '@absolo/fonts/all';
+```
 
-Status: scaffold (no source yet).
+This loads both faces; pair with `@absolo/design-tokens/css` whose `--absolo-font-sans` / `--absolo-font-mono` variables already point at these families.
+
+Plan reference: [`../../docs/plans/04-design-system-d1e00e.md`](../../docs/plans/04-design-system-d1e00e.md).

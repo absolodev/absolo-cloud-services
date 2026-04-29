@@ -1,0 +1,29 @@
+{
+  "name": "@absolo/test-utils",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared testing helpers: factories, MSW handlers, Vitest config preset.",
+  "absolo": {
+    "visibility": "private"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./vitest": "./src/vitest.preset.ts",
+    "./factories": "./src/factories/index.ts"
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "files": ["src"],
+  "dependencies": {
+    "@faker-js/faker": "^9.3.0"
+  },
+  "devDependencies": {
+    "@absolo/tsconfig": "workspace:*",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.8"
+  },
+  "peerDependencies": {
+    "vitest": "^2.1.0"
+  }
+}
