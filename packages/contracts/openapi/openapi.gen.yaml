@@ -1,0 +1,11 @@
+# GENERATED FILE — DO NOT EDIT.
+# Run `pnpm --filter @absolo/contracts gen:openapi` to populate.
+# Placeholder so consumers can already path-resolve the file.
+openapi: '3.1.0'
+info:
+  title: Absolo API
+  version: 0.1.0
+  description: Placeholder — regenerate from Zod schemas.
+paths: {}
+components:
+  schemas: {}
