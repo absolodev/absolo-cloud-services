@@ -88,3 +88,7 @@ Specialized: Terminal (xterm wrapper), LogTail, MetricChart, UsageMeter, PlanCar
 ## Open items
 - Final accent color locked after brand review.
 - Decide on illustration style (gradient-line vs flat-color vs photographic).
+
+## Progress
+- [~] Phase 0 scaffolding in progress (see `../PROGRESS.md`).
+

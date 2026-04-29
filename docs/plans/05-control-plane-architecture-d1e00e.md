@@ -93,3 +93,7 @@ src/
 ## Open items
 - Whether to use **Effect** (TypeScript effect system) for command handlers — defer; keep idiomatic NestJS for v1.
 - Multi-tenant DB strategy: single DB + `tenant_id` (chosen) vs schema-per-tenant (rejected, doesn't scale operationally).
+
+## Progress
+- [~] Phase 0 scaffolding in progress (see `../PROGRESS.md`).
+

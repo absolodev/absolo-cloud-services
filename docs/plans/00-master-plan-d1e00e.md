@@ -441,6 +441,9 @@ Detailed milestones in `35-roadmap-phases-d1e00e.md`.
 | 38 | `38-platform-self-deployment-d1e00e.md` | How Absolo's own services update with zero downtime |
 | 39 | `39-enterprise-byo-infra-d1e00e.md` | Enterprise-only Bring-Your-Own-Infrastructure product |
 | 40 | `40-monorepo-structure-d1e00e.md` | Concrete `absolo-cloud-services` directory layout |
+| 41 | `41-application-configuration-d1e00e.md` | App configuration & environment variables (UI, CLI, encryption, file mounts) |
+
+> Implementation progress is tracked centrally in [`../PROGRESS.md`](../PROGRESS.md) and per-plan in each plan's **Progress** section.
 
 ---
 

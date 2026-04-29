@@ -118,3 +118,7 @@ POST /v1/apps-or-sites/:id/bindings
 - Pull-request preview environments (per-PR ephemeral envs) — phase 2 (will reuse the staging env machinery; metered like staging without the $3 flat fee since they're auto-cleaned).
 - Multi-replica blue/green per region — phase 2.
 - Cross-environment data masking on promotion (e.g., scrub PII when copying prod data to staging) — phase 2.
+
+## Progress
+- [~] Phase 0 scaffolding in progress (see `../PROGRESS.md`).
+
