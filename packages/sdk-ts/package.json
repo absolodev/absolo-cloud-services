@@ -1,0 +1,34 @@
+{
+  "name": "@absolo/sdk",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Official TypeScript SDK for the Absolo Cloud REST API. Thin, fetch-based, fully typed via @absolo/contracts.",
+  "absolo": {
+    "visibility": "public",
+    "publish": "future",
+    "extractTo": "@absolo/sdk (npm) + absolo/sdk-js (mirror)"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./errors": "./src/errors.ts"
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "files": ["src", "dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "@absolo/contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "@absolo/tsconfig": "workspace:*",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.8"
+  }
+}
