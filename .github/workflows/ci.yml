@@ -1,0 +1,76 @@
+# Absolo Cloud CI — skeleton.
+#
+# Phase 0: this workflow is a placeholder. It defines the matrix of jobs we
+# expect (lint, test, build, security scan, IaC validate, helm lint) but each
+# step is currently a no-op. As source code lands, jobs will be filled in.
+#
+# Plan reference: docs/plans/30-testing-ci-cd-d1e00e.md
+
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Placeholder
+        run: echo "lint placeholder — wire up ESLint, Prettier, clippy, rustfmt, tofu fmt, helm lint, packer validate"
+
+  type-check:
+    name: type-check
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Placeholder
+        run: echo "type-check placeholder — wire up tsc + cargo check"
+
+  test-ts:
+    name: test (typescript)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Placeholder
+        run: echo "ts test placeholder — wire up Vitest + Jest"
+
+  test-rust:
+    name: test (rust)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Placeholder
+        run: echo "rust test placeholder — wire up cargo nextest"
+
+  iac-validate:
+    name: iac validate
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Placeholder
+        run: echo "iac validate placeholder — wire up tofu validate, tflint, tfsec, checkov, packer validate"
+
+  helm-lint:
+    name: helm lint
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Placeholder
+        run: echo "helm lint placeholder — wire up helm lint + helm template snapshot"
+
+  security-scan:
+    name: security scan
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Placeholder
+        run: echo "security placeholder — wire up gitleaks, osv-scanner, trivy, cosign verify"

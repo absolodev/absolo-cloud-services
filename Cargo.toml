@@ -1,0 +1,67 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/host-agent",
+    "crates/edge-proxy",
+    "crates/builder-worker",
+    "crates/metering-aggregator",
+    "crates/web-ssh-gateway",
+    "crates/log-shipper",
+    "crates/cli",
+    "crates/shared",
+]
+
+[workspace.package]
+version = "0.0.0"
+edition = "2021"
+rust-version = "1.83"
+license = "Apache-2.0"
+authors = ["Absolo Cloud <engineering@absolo.cloud>"]
+repository = "https://github.com/absolo/absolo-cloud-services"
+publish = false
+
+[workspace.dependencies]
+# Async runtime
+tokio = { version = "1.42", features = ["full"] }
+async-trait = "0.1"
+futures = "0.3"
+
+# HTTP / RPC
+axum = "0.8"
+tonic = "0.12"
+hyper = "1.5"
+tower = "0.5"
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "json"] }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+prost = "0.13"
+
+# Database
+sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio", "tls-rustls", "postgres", "macros", "uuid", "chrono"] }
+
+# Observability
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+opentelemetry = "0.27"
+opentelemetry_sdk = "0.27"
+
+# Errors
+thiserror = "2"
+anyhow = "1"
+
+# IDs / time
+uuid = { version = "1", features = ["v4", "v7", "serde"] }
+chrono = { version = "0.4", default-features = false, features = ["std", "clock", "serde"] }
+ulid = { version = "1", features = ["serde", "uuid"] }
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = "symbols"
+
+[profile.dev]
+opt-level = 0
+debug = true

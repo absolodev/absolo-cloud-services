@@ -1,0 +1,55 @@
+# Absolo Cloud — CODEOWNERS
+#
+# Path-based ownership. PRs touching these paths require approval from the
+# listed owners. Sensitive paths (iam, billing, security, host-agent,
+# edge-proxy) require 2 approvals (configured in branch protection).
+#
+# This file will be populated with real GitHub usernames as engineers join.
+# Until then it acts as a placeholder so paths are documented.
+
+# default
+*                                       @absolo/founders
+
+# Frontends
+/apps/marketing/                        @absolo/frontend
+/apps/dashboard/                        @absolo/frontend
+/apps/admin/                            @absolo/frontend @absolo/security
+/apps/status/                           @absolo/sre
+
+# Control plane
+/services/control-plane/                @absolo/backend
+/services/control-plane/src/modules/iam/        @absolo/security @absolo/backend
+/services/control-plane/src/modules/billing/    @absolo/billing @absolo/backend
+/services/control-plane/src/modules/admin/      @absolo/security @absolo/backend
+
+# Rust hot-path
+/crates/host-agent/                     @absolo/security @absolo/sre
+/crates/edge-proxy/                     @absolo/security @absolo/sre
+/crates/builder-worker/                 @absolo/backend
+/crates/metering-aggregator/            @absolo/billing
+/crates/web-ssh-gateway/                @absolo/security
+/crates/log-shipper/                    @absolo/sre
+/crates/cli/                            @absolo/devrel @absolo/backend
+
+# Shared TS packages
+/packages/contracts/                    @absolo/backend @absolo/frontend
+/packages/sdk-ts/                       @absolo/devrel
+/packages/design-tokens/                @absolo/design @absolo/frontend
+/packages/ui/                           @absolo/design @absolo/fronwtend
+
+# Templates
+/templates/                             @absolo/devrel @absolo/backend
+
+# Infra
+/infra/                                 @absolo/sre
+/infra/tofu/stacks/prod-*/              @absolo/sre @absolo/security
+/infra/argocd/projects/prod-*/          @absolo/sre @absolo/security
+/infra/helm/charts/                     @absolo/sre
+
+# Plans & docs
+/docs/plans/                            @absolo/founders
+/docs/architecture/                     @absolo/founders @absolo/backend
+
+# Repo-wide config
+/.github/                               @absolo/founders @absolo/sre
+/SECURITY.md                            @absolo/security
