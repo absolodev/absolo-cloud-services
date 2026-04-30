@@ -337,3 +337,28 @@ export const sites = computeSchema.table(
   },
   (table) => [uniqueIndex('idx_sites_env_slug').on(table.environmentId, table.slug)],
 );
+
+// --- Phase 1: Domains & Routing ---
+export const domainsSchema = pgSchema('domains');
+
+export const subdomains = domainsSchema.table('subdomains', {
+  id: text('id').primaryKey(),
+  fullHost: text('full_host').notNull().unique(), // e.g. "my-shop-7fk2.absolo.app"
+  appId: text('app_id').references(() => apps.id, { onDelete: 'set null' }),
+  orgId: text('org_id')
+    .notNull()
+    .references(() => organizations.id, { onDelete: 'cascade' }),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+});
+
+export const customDomains = domainsSchema.table('custom_domains', {
+  id: text('id').primaryKey(),
+  domainName: text('domain_name').notNull().unique(), // e.g. "www.example.com"
+  appId: text('app_id').references(() => apps.id, { onDelete: 'set null' }),
+  orgId: text('org_id')
+    .notNull()
+    .references(() => organizations.id, { onDelete: 'cascade' }),
+  status: text('status').notNull().default('PENDING_VERIFICATION'), // PENDING_VERIFICATION, ACTIVE, ERROR
+  verifiedAt: timestamp('verified_at', { withTimezone: true }),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+});

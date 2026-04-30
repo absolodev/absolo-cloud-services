@@ -13,6 +13,7 @@ import { BillingModule } from './modules/billing/billing.module.js';
 import { OutboxModule } from './modules/outbox/outbox.module.js';
 import { AppsModule } from './modules/apps/apps.module.js';
 import { OrchestratorService } from './modules/orchestrator/orchestrator.service.js';
+import { DomainsModule } from './modules/domains/domains.module.js';
 
 /**
  * Root module wiring every domain module + cross-cutting concerns.
@@ -36,6 +37,7 @@ import { OrchestratorService } from './modules/orchestrator/orchestrator.service
     BillingModule,
     OutboxModule,
     AppsModule,
+    DomainsModule,
   ],
   providers: [
     {

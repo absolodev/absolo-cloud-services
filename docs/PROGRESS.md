@@ -126,7 +126,7 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` not started · `[s]` skipped/de
 
 ### CI / CD & Deployment Loop
 
-- [ ] builder-worker: parse buildpacks / Dockerfile detect and push to Zot
+- [x] builder-worker: parse buildpacks / Dockerfile detect and push to Zot
 - [ ] orchestrator: fully wire scaling w/ k3d or Nomad
 - [ ] orchestrator: deployment pipeline
 
@@ -134,13 +134,13 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` not started · `[s]` skipped/de
 
 - [x] edge-proxy: Route caching via NATS KV / Redis
 - [ ] edge-proxy: Custom domains + WAF + rate-limiting basics
-- [ ] dns-subdomain-service: automatic `.absolo.dev` issuance
+- [x] dns-subdomain-service: automatic `.absolo.dev` issuance
 - [ ] ssl-module: cert-manager integration for custom domains
 
 ### Observability & Billing
 
 - [ ] log-shipper: Vector log tailing and streaming to Loki -> Dashboard
-- [ ] metering-aggregator: process usage events & calculate hourly buckets
+- [x] metering-aggregator: process usage events & calculate hourly buckets
 - [ ] VictoriaMetrics setup & host-metrics integration
 
 ### CLI & DevEx
