@@ -11,6 +11,13 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "dev:infra": "docker compose up -d",
+    "dev:infra:down": "docker compose down",
+    "dev:infra:wipe": "docker compose down -v",
+    "dev:logs": "docker compose logs -f",
+    "dev:api": "pnpm --filter @absolo/control-plane dev",
+    "dev:dashboard": "pnpm --filter @absolo/dashboard dev",
+    "dev:marketing": "pnpm --filter @absolo/marketing dev",
     "lint": "turbo run lint",
     "test": "turbo run test",
     "type-check": "turbo run type-check",

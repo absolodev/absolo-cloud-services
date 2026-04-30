@@ -1,14 +1,32 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["**/.env.*", "tsconfig.base.json"],
+  "globalDependencies": [".env", ".env.local", ".env.*"],
+  "globalEnv": ["NODE_ENV", "CI"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "build/**", "out/**"]
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "build/**", "out/**"],
+      "env": [
+        "NEXT_PUBLIC_API_BASE_URL",
+        "VITE_API_BASE_URL",
+        "DATABASE_URL"
+      ]
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "env": [
+        "DATABASE_URL",
+        "DATABASE_POOL_MAX",
+        "SESSION_SECRET",
+        "PORT",
+        "HOST",
+        "LOG_LEVEL",
+        "LOG_PRETTY",
+        "CORS_ORIGINS",
+        "NEXT_PUBLIC_API_BASE_URL",
+        "VITE_API_BASE_URL"
+      ]
     },
     "lint": {
       "outputs": []
@@ -20,6 +38,17 @@
     "type-check": {
       "dependsOn": ["^build"],
       "outputs": []
+    },
+    "gen:openapi": {
+      "outputs": ["openapi/**"]
+    },
+    "db:generate": {
+      "cache": false,
+      "outputs": ["drizzle/**"]
+    },
+    "db:migrate": {
+      "cache": false,
+      "env": ["DATABASE_URL"]
     },
     "clean": {
       "cache": false
