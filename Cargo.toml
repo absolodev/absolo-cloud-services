@@ -27,7 +27,8 @@ async-trait = "0.1"
 futures = "0.3"
 
 # HTTP / RPC
-axum = "0.8"
+axum = { version = "0.8", features = ["ws", "macros"] }
+axum-core = "0.5"
 tonic = "0.12"
 hyper = "1.5"
 tower = "0.5"

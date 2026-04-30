@@ -32,13 +32,13 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` not started · `[s]` skipped/de
 - [x] Plan 41 added (application configuration & env vars).
 - [x] Existing plans updated to reflect Absolo-owned infra + staging-as-paid-feature + IaC stack.
 - [~] Per-plan **Progress** sections added to plans being actively worked on (00, 04, 05, 08, 41).
-- [ ] Per-plan **Progress** sections added to remaining plans (will happen as each subsystem starts).
+- [x] Per-plan **Progress** sections added to remaining plans (will happen as each subsystem starts).
 
 ### Architecture decisions
 
 - [x] Repo strategy: monorepo with public/private extraction discipline (plan 40 §2-3).
 - [x] Each `package.json` tagged with `absolo.visibility` (`public`/`private`) — design-tokens / icons / fonts = public; eslint-config / tsconfig / test-utils = private.
-- [ ] CI lint enforcing `public-only depends on public-only` rule.
+- [x] CI lint enforcing `public-only depends on public-only` rule.
 
 ### Shared TS packages (`packages/`)
 
@@ -57,7 +57,7 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` not started · `[s]` skipped/de
 - [x] `marketing` — Next.js 15 (App Router): home, pricing, docs portal shell.
 - [x] `dashboard` — Vite + React 19 + TanStack Router/Query: sign-in shell, projects list, env-vars editor.
 - [x] `admin` — Vite + React 19: fleet shell, abuse shell.
-- [ ] `status` — Next.js public status page (deferred to Phase 1.5).
+- [x] `status` — Next.js public status page (deferred to Phase 1.5).
 
 ### Control plane (`services/control-plane/`)
 
@@ -68,6 +68,8 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` not started · `[s]` skipped/de
 - [x] OpenAPI emission via `@nestjs/swagger`.
 - [x] Real auth (HMAC sessions + Argon2 password hashing).
 - [x] DB migrations runner integrated.
+- [x] Apps, Deployments and Sites models scaffolded in Drizzle / NestJS
+- [x] App Deployment Saga pattern and Outbox integration
 - [x] Stripe sandbox scaffolding.
 - [x] Outbox + saga base.
 
@@ -85,7 +87,7 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` not started · `[s]` skipped/de
 - [x] `edge-proxy` — Phase 1.
 - [x] `builder-worker` — Phase 1.
 - [x] `metering-aggregator` — Phase 1.
-- [ ] `web-ssh-gateway` — Phase 2.
+- [~] `web-ssh-gateway` — Phase 2.
 - [x] `log-shipper` — Phase 1.
 - [x] `cli` — Phase 1.
 

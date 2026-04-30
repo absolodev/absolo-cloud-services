@@ -3,6 +3,7 @@
 The signed-in product surface where customers create projects, deploy apps and sites, manage databases and buckets, view billing, tail logs, and open Web SSH — built as a Vite + React 19 + shadcn/ui SPA, kept separate from the marketing site for hard separation of concerns.
 
 ## Stack
+
 - **Vite 6** + **React 19** + **TypeScript 5.7** strict.
 - **TanStack Router** (file-based, type-safe) — chosen over Next.js because the dashboard is a private SPA without SEO needs and benefits from instant client-side routing.
 - **TanStack Query** for server state, **Zustand** for thin global UI state.
@@ -16,6 +17,7 @@ The signed-in product surface where customers create projects, deploy apps and s
 - **OpenAPI codegen** (orval) — generates typed clients from `absolo-control-plane`'s OpenAPI spec.
 
 ## Information architecture
+
 ```
 /                       → Org switcher → /orgs/:orgSlug
 /orgs/:orgSlug
@@ -55,28 +57,33 @@ The signed-in product surface where customers create projects, deploy apps and s
 ```
 
 ## Real-time surfaces
+
 - **Live logs** — WebSocket from `web-ssh-gateway` (or dedicated `log-stream-gateway`).
 - **Live metrics** — server-sent events, 5s tick.
 - **Deployment progress** — SSE streaming saga state from `orchestrator`.
 - **Usage counter** — refresh every 60s (matches metering tick).
 
 ## State patterns
+
 - **Server state** = TanStack Query (cache, revalidation, optimistic updates with rollback).
 - **UI state** = Zustand (theme, sidebar, modals).
 - **Form state** = react-hook-form (controlled, validated with Zod).
 - No Redux. No Context-as-state.
 
 ## Auth
+
 - Cookie-based session (HttpOnly, Secure, `__Host-` prefix, SameSite=Lax).
 - Refresh handled silently by an auth middleware in TanStack Query.
 - Org context = path param (`/orgs/:orgSlug`); switching org = navigate, not state.
 
 ## Theming
+
 - Default = dark, system-preference detected on first load, persisted in localStorage.
 - High-contrast variants for both themes.
 - Theme tokens consumed from `04-design-system-d1e00e.md` package (`@absolo/design-tokens`).
 
 ## Folder layout
+
 ```
 apps/dashboard/
   src/
@@ -95,12 +102,14 @@ apps/dashboard/
 ```
 
 ## Performance
+
 - Route-level code splitting (TanStack Router does it natively).
 - Large lists virtualized with TanStack Virtual.
 - Charts lazy-loaded.
 - Bundle budget: < 250 KB gz initial, < 60 KB gz per route chunk.
 
 ## Accessibility & UX details
+
 - Cmd+K command palette (cmdk by pacocoursey).
 - Skeleton states everywhere; never spinners on initial loads > 200ms.
 - Empty states with concrete next-action CTAs.
@@ -108,10 +117,16 @@ apps/dashboard/
 - All destructive actions require typed confirmation (e.g., type project name).
 
 ## Testing
+
 - Vitest + Testing Library for components.
 - Playwright for critical-path E2E (signup → deploy → see live).
 - Storybook (or Ladle) for design-system components.
 
 ## Open items
+
 - Onboarding wizard flow detail goes in `02a-onboarding-flow-d1e00e.md` if it grows.
 - File browser for Sites mode storage — design TBD; reference TablePlus / Cyberduck UX.
+
+## Progress
+
+- [ ] Not started yet.

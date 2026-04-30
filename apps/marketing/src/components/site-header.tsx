@@ -10,10 +10,10 @@ const NAV = [
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-bg/80 backdrop-blur supports-[backdrop-filter]:bg-bg/60">
+    <header className="sticky top-0 z-40 w-full border-b border-border bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-2 text-fg">
-          <AbsoloWordmark className="h-7 w-auto text-brand-500" />
+        <Link href="/" className="flex items-center gap-2 text-foreground">
+          <AbsoloWordmark className="h-7 w-auto text-primary" />
           <span className="sr-only">Absolo Cloud</span>
         </Link>
 
@@ -25,7 +25,7 @@ export function SiteHeader() {
                 href={item.href}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm text-fg-muted transition-colors hover:text-fg"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 <Github className="h-4 w-4" />
                 {item.label}
@@ -34,7 +34,7 @@ export function SiteHeader() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-sm text-fg-muted transition-colors hover:text-fg"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 {item.label}
               </Link>
@@ -42,19 +42,19 @@ export function SiteHeader() {
           )}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <a
             href="https://app.absolo.cloud/sign-in"
-            className="hidden rounded-md px-3 py-1.5 text-sm text-fg-muted transition-colors hover:text-fg sm:inline-block"
+            className="hidden text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:inline-block"
           >
             Sign in
           </a>
           <a
             href="https://app.absolo.cloud/sign-up"
-            className="inline-flex items-center gap-1.5 rounded-md bg-brand-500 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-brand-600"
+            className="inline-flex items-center gap-1.5 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
           >
             Start free
-            <ArrowRight className="h-3.5 w-3.5" />
+            <ArrowRight className="h-4 w-4" />
           </a>
         </div>
       </div>

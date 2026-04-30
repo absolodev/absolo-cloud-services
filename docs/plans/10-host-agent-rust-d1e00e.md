@@ -3,11 +3,13 @@
 A small, hardened Rust binary installed on every customer-supplied server that joins it to the platform: bootstraps k3s, reports telemetry, brokers Web SSH exec sessions, and acts as the only privileged surface the control plane reaches.
 
 ## Why a custom agent
+
 - We need a single, signed, audited binary per host: easier to reason about than installing k3s + custom-script glue.
 - We need outbound-only connectivity (no inbound from internet) for security: agent dials home over mTLS gRPC.
 - We can ship a single static binary (musl) that runs anywhere modern Linux + systemd.
 
 ## Responsibilities
+
 1. **Bootstrap**: install/upgrade k3s, configure CNI (Cilium), join the regional cluster, label/taint the node.
 2. **Health & telemetry**: emit CPU, memory, disk, network, kernel info, k3s readiness.
 3. **Lifecycle**: drain, cordon, decommission gracefully on command.
@@ -17,17 +19,20 @@ A small, hardened Rust binary installed on every customer-supplied server that j
 7. **Self-update**: download new agent versions over signed channel, swap in via systemd, verify, roll back on failure.
 
 ## Process model
+
 - Single static `absolo-agent` binary, run by systemd as `absolo` user (NOT root) with explicit Linux capabilities (`CAP_NET_ADMIN`, `CAP_SYS_ADMIN` only when bootstrapping k3s; dropped after).
 - Subprocesses for k3s and Vector are managed as children with health checks.
 - IPC with k3s via local kubelet socket where allowed.
 
 ## Communication
+
 - **Long-lived bidi gRPC stream** to `host-agent-control` endpoint in control plane.
 - mTLS with **per-host certificate** issued at install time (90-day rotation, automated).
 - Auth: cert pinning + signed JWT challenge per command.
 - **No inbound ports** required from the public internet (only outbound 443).
 
 ## Install flow
+
 - Operator runs in admin: "Generate install command for region X".
 - Output is a one-liner:
   ```
@@ -43,6 +48,7 @@ A small, hardened Rust binary installed on every customer-supplied server that j
   7. Reports back; admin sees host as `online`.
 
 ## On-host layout
+
 ```
 /etc/absolo/
   agent.toml                # config (control plane URL, region, labels)
@@ -57,6 +63,7 @@ A small, hardened Rust binary installed on every customer-supplied server that j
 ```
 
 ## gRPC surface (control plane → agent)
+
 ```protobuf
 service HostAgent {
   rpc Heartbeat(stream HeartbeatRequest) returns (stream HeartbeatResponse);
@@ -72,6 +79,7 @@ service HostAgent {
 All RPCs are wrapped in **Heartbeat tunnel**: agent dials in once, server multiplexes commands over the same stream — works through NATs/firewalls without inbound ports.
 
 ## Security
+
 - mTLS with cert pinning; refuse any cert not issued by our internal CA.
 - Per-command HMAC over `(host_id, command_id, payload)` using session key derived from cert exchange.
 - All commands logged locally (append-only journald) and shipped to control-plane audit.
@@ -81,19 +89,27 @@ All RPCs are wrapped in **Heartbeat tunnel**: agent dials in once, server multip
 - Self-destruct: on `Decommission` command, agent removes platform pods, leaves k3s, wipes `/var/lib/absolo/state`, optionally uninstalls k3s, sends final heartbeat, exits.
 
 ## Observability
+
 - Agent exposes Prometheus-format metrics on `127.0.0.1:9090` (loopback only).
 - log-shipper reads `/var/log/absolo/agent.log` and ships.
 
 ## Versioning & upgrades
+
 - Agent version is part of every heartbeat; admin sees fleet version distribution.
 - Phased rollouts: pick % of hosts, watch error rate, advance.
 - Rollback: keep previous binary; on health check failure, switch back automatically.
 
 ## Testing
+
 - Unit tests in Rust (`cargo test`).
 - Integration tests in a Vagrant or LXC test fleet.
 - Chaos tests: kill k3s while agent runs; pull network; full reboot mid-saga.
 
 ## Open items
+
 - Whether to support BSD or only Linux at launch — Linux only.
 - ARM64 + AMD64 from day 1 (yes, both built).
+
+## Progress
+
+- [ ] Not started yet.

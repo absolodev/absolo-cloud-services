@@ -11,6 +11,7 @@ import { EnvironmentsModule } from './modules/environments/environments.module.j
 import { EnvVarsModule } from './modules/env-vars/env-vars.module.js';
 import { BillingModule } from './modules/billing/billing.module.js';
 import { OutboxModule } from './modules/outbox/outbox.module.js';
+import { AppsModule } from './modules/apps/apps.module.js';
 
 /**
  * Root module wiring every domain module + cross-cutting concerns.
@@ -33,6 +34,7 @@ import { OutboxModule } from './modules/outbox/outbox.module.js';
     EnvVarsModule,
     BillingModule,
     OutboxModule,
+    AppsModule,
   ],
   providers: [
     {

@@ -275,3 +275,65 @@ export const sagaState = mq.table('saga_state', {
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 });
+
+// ---------- compute ----------
+export const computeSchema = pgSchema('compute');
+
+export type AppSourceKind = 'git' | 'dockerfile' | 'image' | 'template';
+
+export const apps = computeSchema.table(
+  'apps',
+  {
+    id: text('id').primaryKey(),
+    environmentId: text('environment_id')
+      .notNull()
+      .references(() => environments.id, { onDelete: 'cascade' }),
+    slug: text('slug').notNull(),
+    sourceKind: text('source_kind').notNull(), // AppSourceKind
+    sourceRef: text('source_ref').notNull(),
+    defaultBranch: text('default_branch'),
+    buildSpec: jsonb('build_spec'),
+    runtimeSpec: jsonb('runtime_spec'),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+    deletedAt: timestamp('deleted_at', { withTimezone: true }),
+  },
+  (table) => [uniqueIndex('idx_apps_env_slug').on(table.environmentId, table.slug)],
+);
+
+export const deployments = computeSchema.table(
+  'deployments',
+  {
+    id: text('id').primaryKey(),
+    appId: text('app_id')
+      .notNull()
+      .references(() => apps.id, { onDelete: 'cascade' }),
+    versionId: text('version_id').notNull(),
+    sourceCommitSha: text('source_commit_sha'),
+    buildLogUrl: text('build_log_url'),
+    status: text('status').notNull(), // 'queued', 'building', 'deploying', 'live', 'superseded', 'failed'
+    trafficPct: integer('traffic_pct').notNull().default(0),
+    startedAt: timestamp('started_at', { withTimezone: true }),
+    finishedAt: timestamp('finished_at', { withTimezone: true }),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [index('idx_deployments_app').on(table.appId)],
+);
+
+export const sites = computeSchema.table(
+  'sites',
+  {
+    id: text('id').primaryKey(),
+    environmentId: text('environment_id')
+      .notNull()
+      .references(() => environments.id, { onDelete: 'cascade' }),
+    slug: text('slug').notNull(),
+    templateId: text('template_id').notNull(),
+    runtimeSpec: jsonb('runtime_spec'),
+    pvSizeGb: integer('pv_size_gb').default(0),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+    deletedAt: timestamp('deleted_at', { withTimezone: true }),
+  },
+  (table) => [uniqueIndex('idx_sites_env_slug').on(table.environmentId, table.slug)],
+);

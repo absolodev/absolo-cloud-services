@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Absolo customer dashboard \u2014 the SPA your users live in.",
+  "description": "Absolo customer dashboard — the SPA your users live in.",
   "absolo": {
     "visibility": "private",
     "publish": "no"
@@ -34,6 +34,8 @@
   "devDependencies": {
     "@absolo/tsconfig": "workspace:*",
     "@hookform/resolvers": "^3.10.0",
+    "@tanstack/router-devtools": "^1.166.13",
+    "@tanstack/router-plugin": "^1.167.30",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",

@@ -1,8 +1,8 @@
+@import '@absolo/design-tokens/css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import '@absolo/design-tokens/css';
 
 html {
   -webkit-font-smoothing: antialiased;
@@ -12,7 +12,7 @@ html {
 
 body {
   font-family: var(--absolo-font-sans);
-  background-color: var(--absolo-bg);
-  color: var(--absolo-fg);
+  background-color: var(--background);
+  color: var(--foreground);
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
 }
