@@ -1,0 +1,20 @@
+/* @absolo/ui — global stylesheet.
+ * Apps that use the component library import this file once near the root,
+ * along with @absolo/design-tokens/css and a Tailwind config that extends
+ * the @absolo/design-tokens Tailwind preset.
+ */
+
+@import "@absolo/design-tokens/css";
+
+/* Sonner toast tweaks to use our tokens. */
+:root {
+  --toast-bg: var(--color-card);
+  --toast-fg: var(--color-card-foreground);
+  --toast-border: var(--color-border);
+}
+
+[data-sonner-toaster] {
+  --normal-bg: var(--toast-bg);
+  --normal-text: var(--toast-fg);
+  --normal-border: var(--toast-border);
+}
