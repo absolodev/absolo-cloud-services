@@ -1,6 +1,7 @@
 import { Controller, Get, Inject } from '@nestjs/common';
 import { sql } from 'drizzle-orm';
 import { DB, type Database } from '../../db/db.module.js';
+import { Public } from '../iam/public.decorator.js';
 
 /**
  * Liveness + readiness for the control plane.
@@ -9,9 +10,11 @@ import { DB, type Database } from '../../db/db.module.js';
  *                     loop is wedged.
  * - `GET /readyz`   — readiness (DB reachable). 503 if the DB ping fails.
  *
- * These are *unauthenticated* and excluded from rate limiting. The orchestrator
- * relies on them for restart/replace decisions.
+ * These are *unauthenticated* (`@Public()` bypasses the global AuthGuard)
+ * and excluded from rate limiting. The orchestrator relies on them for
+ * restart/replace decisions.
  */
+@Public()
 @Controller()
 export class HealthController {
   constructor(@Inject(DB) private readonly db: Database) {}

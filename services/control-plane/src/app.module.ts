@@ -5,19 +5,24 @@ import { ConfigModule } from './config/config.module.js';
 import { DatabaseModule } from './db/db.module.js';
 import { ApiErrorFilter } from './common/api-error.filter.js';
 import { HealthModule } from './modules/health/health.module.js';
+import { IamModule } from './modules/iam/iam.module.js';
 import { ProjectsModule } from './modules/projects/projects.module.js';
 
 /**
  * Root module wiring every domain module + cross-cutting concerns.
  *
- * As more modules come online (iam, orgs, environments, config, billing, …)
- * they're added here. Stub modules for that work-in-progress live alongside
- * (e.g. `iam.module.ts` with TODO routes) so the dependency graph is real.
+ * IamModule registers a global `AuthGuard` (APP_GUARD) so every route is
+ * authenticated by default; routes opt out with `@Public()`.
+ *
+ * As more modules come online (orgs, environments, config, billing, …) they
+ * are added here. Stub modules for work-in-progress can live alongside so
+ * the dependency graph stays real.
  */
 @Module({
   imports: [
     ConfigModule,
     DatabaseModule,
+    IamModule,
     HealthModule,
     ProjectsModule,
   ],
