@@ -1,0 +1,7 @@
+id: 'woocommerce'
+name: 'WooCommerce'
+description: 'WordPress eCommerce made simple'
+version: '1.0.0'
+tags: ['php', 'wordpress', 'ecommerce', 'store']
+ports:
+  - 80

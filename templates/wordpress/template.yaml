@@ -1,0 +1,20 @@
+id: 'wordpress'
+name: 'WordPress'
+description: "The world's most popular CMS, optimized for Absolo."
+version: '1.0.0'
+tags: ['php', 'wordpress', 'cms', 'blog']
+ports:
+  - 80
+env:
+  - name: WORDPRESS_DB_HOST
+    description: 'Database Host'
+    required: true
+  - name: WORDPRESS_DB_USER
+    description: 'Database User'
+    required: true
+  - name: WORDPRESS_DB_PASSWORD
+    description: 'Database Password'
+    required: true
+  - name: WORDPRESS_DB_NAME
+    description: 'Database Name'
+    required: true

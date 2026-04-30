@@ -1,0 +1,16 @@
+id: 'nodejs-express'
+name: 'Node.js Express API'
+description: 'A fast, unopinionated Node.js REST API using Express and TypeScript.'
+version: '1.0.0'
+tags: ['nodejs', 'express', 'backend', 'api']
+ports:
+  - 3000
+env:
+  - name: PORT
+    description: 'The port your application lists on'
+    default: '3000'
+    required: false
+  - name: NODE_ENV
+    description: 'Node Environment'
+    default: 'production'
+    required: false

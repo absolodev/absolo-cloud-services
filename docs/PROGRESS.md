@@ -31,7 +31,7 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` not started · `[s]` skipped/de
 - [x] Plans 37-40 added (IaC, self-deployment, Enterprise BYO, monorepo structure).
 - [x] Plan 41 added (application configuration & env vars).
 - [x] Existing plans updated to reflect Absolo-owned infra + staging-as-paid-feature + IaC stack.
-- [~] Per-plan **Progress** sections added to plans being actively worked on (00, 04, 05, 08, 41).
+- [x] Per-plan **Progress** sections added to plans being actively worked on (00, 04, 05, 08, 41).
 - [x] Per-plan **Progress** sections added to remaining plans (will happen as each subsystem starts).
 
 ### Architecture decisions
@@ -87,7 +87,7 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` not started · `[s]` skipped/de
 - [x] `edge-proxy` — Phase 1.
 - [x] `builder-worker` — Phase 1.
 - [x] `metering-aggregator` — Phase 1.
-- [~] `web-ssh-gateway` — Phase 2.
+- [x] `web-ssh-gateway` — Phase 2.
 - [x] `log-shipper` — Phase 1.
 - [x] `cli` — Phase 1.
 
@@ -121,3 +121,33 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` not started · `[s]` skipped/de
 - IaC stack: `plans/37-infrastructure-as-code-d1e00e.md`
 - Self-deployment: `plans/38-platform-self-deployment-d1e00e.md`
 - App configuration: `plans/41-application-configuration-d1e00e.md`
+
+## Phase 1 — Core data plane (Current)
+
+### CI / CD & Deployment Loop
+
+- [ ] builder-worker: parse buildpacks / Dockerfile detect and push to Zot
+- [ ] orchestrator: fully wire scaling w/ k3d or Nomad
+- [ ] orchestrator: deployment pipeline
+
+### Edge & Networking
+
+- [ ] edge-proxy: Route caching via NATS KV / Redis
+- [ ] edge-proxy: Custom domains + WAF + rate-limiting basics
+- [ ] dns-subdomain-service: automatic `.absolo.dev` issuance
+- [ ] ssl-module: cert-manager integration for custom domains
+
+### Observability & Billing
+
+- [ ] log-shipper: Vector log tailing and streaming to Loki -> Dashboard
+- [ ] metering-aggregator: process usage events & calculate hourly buckets
+- [ ] VictoriaMetrics setup & host-metrics integration
+
+### CLI & DevEx
+
+- [ ] CLI: robust handling of endpoints via reqwest & generated OpenAPI config
+- [ ] SDKs: `@absolo/sdk` export generation for frontends
+
+### Testing & Staging
+
+- [ ] One template (Next.js) end-to-end deployed successfully

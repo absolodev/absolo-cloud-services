@@ -1,0 +1,7 @@
+id: 'static-site'
+name: 'Static HTML/JS Site'
+description: 'Simple static hosting served by NGINX'
+version: '1.0.0'
+tags: ['html', 'css', 'javascript', 'frontend']
+ports:
+  - 80

@@ -1,0 +1,27 @@
+id: 'ghost'
+name: 'Ghost CMS'
+description: 'Professional publishing platform for blogs, newsletters, and creators'
+version: '1.0.0'
+tags: ['nodejs', 'ghost', 'cms', 'blog']
+ports:
+  - 2368
+env:
+  - name: url
+    description: 'Your site URL (e.g. https://myblog.com)'
+    required: true
+  - name: database__client
+    description: 'Database client (mysql)'
+    default: 'mysql'
+    required: true
+  - name: database__connection__host
+    description: 'Database host'
+    required: true
+  - name: database__connection__user
+    description: 'Database user'
+    required: true
+  - name: database__connection__password
+    description: 'Database password'
+    required: true
+  - name: database__connection__database
+    description: 'Database name'
+    required: true

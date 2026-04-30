@@ -1,0 +1,12 @@
+id: 'python-fastapi'
+name: 'Python FastAPI'
+description: 'High performance Python REST API with FastAPI and Uvicorn'
+version: '1.0.0'
+tags: ['python', 'fastapi', 'backend', 'api']
+ports:
+  - 8000
+env:
+  - name: PORT
+    description: 'The port Uvicorn binds to'
+    default: '8000'
+    required: false

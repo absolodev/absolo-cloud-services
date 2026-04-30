@@ -1,0 +1,16 @@
+id: 'laravel'
+name: 'Laravel 11'
+description: 'PHP web application framework with sleek, elegant syntax.'
+version: '1.0.0'
+tags: ['php', 'laravel', 'backend', 'fullstack']
+ports:
+  - 80
+env:
+  - name: APP_ENV
+    description: 'Application Environment'
+    default: 'production'
+    required: false
+  - name: APP_KEY
+    description: 'Application Key'
+    default: ''
+    required: true
