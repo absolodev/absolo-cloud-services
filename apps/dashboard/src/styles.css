@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '@absolo/design-tokens/css';
+@import '@absolo/ui/styles';
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--absolo-font-sans);
+  background-color: var(--absolo-bg);
+  color: var(--absolo-fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
