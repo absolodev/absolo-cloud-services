@@ -3,16 +3,22 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Absolo control plane \u2014 the public REST API. NestJS 11 over Fastify, Postgres via Drizzle, contracts validated with Zod from @absolo/contracts.",
+  "description": "Absolo control plane — the public REST API. NestJS 11 over Fastify, Postgres via Drizzle, contracts validated with Zod from @absolo/contracts.",
   "absolo": {
     "visibility": "private",
     "publish": "no",
-    "contains": ["plan-04", "plan-08", "plan-28", "plan-29", "plan-41"]
+    "contains": [
+      "plan-04",
+      "plan-08",
+      "plan-28",
+      "plan-29",
+      "plan-41"
+    ]
   },
   "main": "./src/main.ts",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "dev": "tsx watch src/main.ts",
+    "dev": "node --import @swc-node/register/esm-register --watch src/main.ts",
     "start": "node dist/main.js",
     "type-check": "tsc --noEmit",
     "test": "vitest run",
@@ -43,6 +49,8 @@
   },
   "devDependencies": {
     "@absolo/tsconfig": "workspace:*",
+    "@swc-node/register": "^1.11.1",
+    "@swc/core": "^1.15.32",
     "@types/node": "^22.10.0",
     "drizzle-kit": "^0.30.1",
     "tsx": "^4.19.2",
