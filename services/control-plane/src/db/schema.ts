@@ -10,6 +10,7 @@
  * Other modules (billing, versioning, dns, ...) get their own schema files
  * as those features come online.
  */
+import { sql } from 'drizzle-orm';
 import {
   pgSchema,
   text,
@@ -224,7 +225,7 @@ export const configEntries = projectsSchema.table(
     ),
     projectKeySharedUnique: uniqueIndex('config_entries_project_shared_key_unique')
       .on(t.projectId, t.key)
-      .where('environment_id IS NULL' as never),
+      .where(sql`environment_id IS NULL`),
     projectIdx: index('config_entries_project_idx').on(t.projectId),
   }),
 );
