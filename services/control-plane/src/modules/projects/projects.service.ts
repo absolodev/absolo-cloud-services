@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  ForbiddenException,
   Inject,
   Injectable,
   NotFoundException,
@@ -13,6 +14,8 @@ import type {
 import { DB, type Database } from '../../db/db.module.js';
 import { projects } from '../../db/schema.js';
 import { newId } from '../../common/ids.js';
+import { OrgsService } from '../iam/orgs.service.js';
+import type { AuthenticatedUser } from '../iam/types.js';
 
 /**
  * Projects domain service.
@@ -28,9 +31,13 @@ import { newId } from '../../common/ids.js';
  */
 @Injectable()
 export class ProjectsService {
-  constructor(@Inject(DB) private readonly db: Database) {}
+  constructor(
+    @Inject(DB) private readonly db: Database,
+    private readonly orgs: OrgsService,
+  ) {}
 
-  async list(orgId: string): Promise<Project[]> {
+  async list(user: AuthenticatedUser, orgId: string): Promise<Project[]> {
+    await this.assertMembership(user, orgId);
     const rows = await this.db
       .select()
       .from(projects)
@@ -39,7 +46,7 @@ export class ProjectsService {
     return rows.map((r) => this.toDomain(r));
   }
 
-  async get(projectId: string): Promise<Project> {
+  async get(user: AuthenticatedUser, projectId: string): Promise<Project> {
     const [row] = await this.db
       .select()
       .from(projects)
@@ -48,10 +55,16 @@ export class ProjectsService {
     if (!row) {
       throw new NotFoundException(`Project ${projectId} not found`);
     }
+    await this.assertMembership(user, row.orgId);
     return this.toDomain(row);
   }
 
-  async create(orgId: string, req: CreateProjectRequest): Promise<Project> {
+  async create(
+    user: AuthenticatedUser,
+    orgId: string,
+    req: CreateProjectRequest,
+  ): Promise<Project> {
+    await this.assertMembership(user, orgId);
     const region = req.region ?? 'eu-central';
     const id = newId('prj');
 
@@ -82,7 +95,12 @@ export class ProjectsService {
     }
   }
 
-  async update(projectId: string, req: UpdateProjectRequest): Promise<Project> {
+  async update(
+    user: AuthenticatedUser,
+    projectId: string,
+    req: UpdateProjectRequest,
+  ): Promise<Project> {
+    const existing = await this.get(user, projectId);
     const [row] = await this.db
       .update(projects)
       .set({
@@ -91,7 +109,7 @@ export class ProjectsService {
         ...(req.status !== undefined ? { status: req.status } : {}),
         updatedAt: new Date(),
       })
-      .where(and(eq(projects.id, projectId), isNull(projects.deletedAt)))
+      .where(and(eq(projects.id, existing.id), isNull(projects.deletedAt)))
       .returning();
     if (!row) {
       throw new NotFoundException(`Project ${projectId} not found`);
@@ -99,14 +117,30 @@ export class ProjectsService {
     return this.toDomain(row);
   }
 
-  async softDelete(projectId: string): Promise<void> {
+  async softDelete(user: AuthenticatedUser, projectId: string): Promise<void> {
+    const existing = await this.get(user, projectId);
     const [row] = await this.db
       .update(projects)
       .set({ deletedAt: new Date(), status: 'pending_deletion', updatedAt: new Date() })
-      .where(and(eq(projects.id, projectId), isNull(projects.deletedAt)))
+      .where(and(eq(projects.id, existing.id), isNull(projects.deletedAt)))
       .returning({ id: projects.id });
     if (!row) {
       throw new NotFoundException(`Project ${projectId} not found`);
+    }
+  }
+
+  /**
+   * Throws 403 if the caller is not a member of the org. Reuses the iam
+   * `OrgsService` so the decision lives next to the membership table.
+   *
+   * Role-aware checks (e.g., only `maintainer+` can delete) are tracked in
+   * plan 04 §casbin and added in the orgs slice; for Phase 0 any membership
+   * grants full access.
+   */
+  private async assertMembership(user: AuthenticatedUser, orgId: string): Promise<void> {
+    const m = await this.orgs.findMembership(user.id, orgId);
+    if (!m) {
+      throw new ForbiddenException('You do not have access to this organisation');
     }
   }
 
