@@ -21,7 +21,7 @@
     "forceConsistentCasingInFileNames": true,
     "allowJs": false,
     "declaration": true,
-    "declarationMap": true,
+    "declarationMap": false,
     "sourceMap": true,
     "incremental": true
   }

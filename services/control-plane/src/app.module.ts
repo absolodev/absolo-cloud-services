@@ -12,6 +12,7 @@ import { EnvVarsModule } from './modules/env-vars/env-vars.module.js';
 import { BillingModule } from './modules/billing/billing.module.js';
 import { OutboxModule } from './modules/outbox/outbox.module.js';
 import { AppsModule } from './modules/apps/apps.module.js';
+import { OrchestratorService } from './modules/orchestrator/orchestrator.service.js';
 
 /**
  * Root module wiring every domain module + cross-cutting concerns.
@@ -41,6 +42,7 @@ import { AppsModule } from './modules/apps/apps.module.js';
       provide: APP_FILTER,
       useClass: ApiErrorFilter,
     },
+    OrchestratorService,
   ],
 })
 export class AppModule {}

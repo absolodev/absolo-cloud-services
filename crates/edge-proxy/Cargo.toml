@@ -16,3 +16,7 @@ reqwest = { version = "0.12.4", features = ["json", "rustls-tls"] }
 tracing-subscriber = "0.3"
 axum = "0.8.0"
 hyper = "1.5.1"
+async-nats = "0.47.0"
+tokio-stream = "0.1.18"
+serde.workspace = true
+serde_json.workspace = true

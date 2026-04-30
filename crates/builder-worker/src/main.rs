@@ -5,6 +5,8 @@ use std::time::Duration;
 use tokio::time::sleep;
 use tracing::{error, info, warn};
 
+mod builder;
+
 #[derive(Debug, Deserialize, Serialize)]
 struct BuildRequestedEvent {
     saga_id: String,
@@ -74,27 +76,59 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 match serde_json::from_slice::<BuildRequestedEvent>(&msg.payload) {
                     Ok(event) => {
                         info!(
-                            "Starting build for app {} (deployment {})",
-                            event.app_id, event.deployment_id
+                            "Starting build for app {} (deployment {}) from {}",
+                            event.app_id, event.deployment_id, event.source_ref
                         );
 
-                        sleep(Duration::from_secs(3)).await;
-                        info!(
-                            "Build mock completed for deployment {}",
-                            event.deployment_id
-                        );
+                        // Mock downloading source
+                        let source_dir = std::env::temp_dir().join(&event.deployment_id);
+                        if let Err(e) = std::fs::create_dir_all(&source_dir) {
+                            warn!("Failed to create mock source dir: {}", e);
+                        }
 
-                        let _ = client
-                            .publish(
-                                "orchestrator.deployment.live",
-                                serde_json::to_vec(&event).unwrap().into(),
-                            )
-                            .await;
+                        // Let's invoke the builder. We will mock the registry URL.
+                        let registry_url = "localhost:5000";
+                        match builder::detect_and_build(
+                            &event.app_id,
+                            &event.deployment_id,
+                            &source_dir,
+                            registry_url,
+                        )
+                        .await
+                        {
+                            Ok(image_tag) => {
+                                info!(
+                                    "Build completed for deployment {}. Image: {}",
+                                    event.deployment_id, image_tag
+                                );
 
-                        if let Err(e) = msg.ack().await {
-                            warn!("Failed to ack message: {}", e);
-                        } else {
-                            info!("Message acked successfully");
+                                let mut payload = serde_json::to_value(&event).unwrap();
+                                // Merge the image tag into the event for Orchestrator
+                                if let Some(obj) = payload.as_object_mut() {
+                                    obj.insert(
+                                        "image_tag".to_string(),
+                                        serde_json::Value::String(image_tag),
+                                    );
+                                }
+
+                                let _ = client
+                                    .publish(
+                                        "orchestrator.deployment.live",
+                                        serde_json::to_vec(&payload).unwrap().into(),
+                                    )
+                                    .await;
+
+                                if let Err(e) = msg.ack().await {
+                                    warn!("Failed to ack message: {}", e);
+                                } else {
+                                    info!("Message acked successfully");
+                                }
+                            }
+                            Err(e) => {
+                                error!("Build failed for payload: {}", e);
+                                // We might want to send a orchestrator.deployment.failed event here
+                                let _ = msg.ack().await;
+                            }
                         }
                     }
                     Err(e) => {

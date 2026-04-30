@@ -132,7 +132,7 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` not started · `[s]` skipped/de
 
 ### Edge & Networking
 
-- [ ] edge-proxy: Route caching via NATS KV / Redis
+- [x] edge-proxy: Route caching via NATS KV / Redis
 - [ ] edge-proxy: Custom domains + WAF + rate-limiting basics
 - [ ] dns-subdomain-service: automatic `.absolo.dev` issuance
 - [ ] ssl-module: cert-manager integration for custom domains
