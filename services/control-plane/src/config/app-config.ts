@@ -12,22 +12,20 @@ const AppConfigSchema = z.object({
   HOST: z.string().default('0.0.0.0'),
 
   // Database
-  DATABASE_URL: z
-    .string()
-    .url()
-    .default('postgres://absolo:absolo@localhost:5432/absolo'),
+  DATABASE_URL: z.string().url().default('postgres://absolo:absolo@localhost:5432/absolo'),
   DATABASE_POOL_MAX: z.coerce.number().int().min(1).max(200).default(10),
 
   // Auth
   /** Cookie + session signing secret. Must be 32+ chars in production. */
-  SESSION_SECRET: z
-    .string()
-    .min(16)
-    .default('dev-only-please-replace-this-with-a-real-secret'),
+  SESSION_SECRET: z.string().min(16).default('dev-only-please-replace-this-with-a-real-secret'),
   /** Allowed origins for CORS — comma-separated. */
   CORS_ORIGINS: z
     .string()
     .default('http://localhost:3000,http://localhost:5173,http://localhost:5174'),
+
+  // Billing
+  STRIPE_SECRET_KEY: z.string().optional().default('sk_test_12345'),
+  STRIPE_WEBHOOK_SECRET: z.string().optional().default('whsec_12345'),
 
   // Observability
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),

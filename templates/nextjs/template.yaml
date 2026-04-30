@@ -1,0 +1,5 @@
+name: 'Next.js'
+id: 'nextjs'
+description: 'A standard Next.js application running on Node.js.'
+dockerfile: 'Dockerfile'
+version: '1.0.0'

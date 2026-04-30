@@ -1,0 +1,36 @@
+{
+  "name": "Absolo Cloud Backend",
+  "image": "mcr.microsoft.com/devcontainers/rust:1-1-bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22",
+      "pnpmVersion": "9.12.3"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "moby": true
+    },
+    "ghcr.io/devcontainers/features/terraform:1": {
+      "version": "latest",
+      "tflint": "latest",
+      "terragrunt": "latest"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "rust-analyzer.check.command": "clippy"
+      },
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "rust-lang.rust-analyzer",
+        "tamasfe.even-better-toml",
+        "hashicorp.terraform"
+      ]
+    }
+  },
+  "postCreateCommand": "npm install -g pnpm && pnpm install"
+}

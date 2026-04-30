@@ -7,6 +7,10 @@ import { ApiErrorFilter } from './common/api-error.filter.js';
 import { HealthModule } from './modules/health/health.module.js';
 import { IamModule } from './modules/iam/iam.module.js';
 import { ProjectsModule } from './modules/projects/projects.module.js';
+import { EnvironmentsModule } from './modules/environments/environments.module.js';
+import { EnvVarsModule } from './modules/env-vars/env-vars.module.js';
+import { BillingModule } from './modules/billing/billing.module.js';
+import { OutboxModule } from './modules/outbox/outbox.module.js';
 
 /**
  * Root module wiring every domain module + cross-cutting concerns.
@@ -25,6 +29,10 @@ import { ProjectsModule } from './modules/projects/projects.module.js';
     IamModule,
     HealthModule,
     ProjectsModule,
+    EnvironmentsModule,
+    EnvVarsModule,
+    BillingModule,
+    OutboxModule,
   ],
   providers: [
     {

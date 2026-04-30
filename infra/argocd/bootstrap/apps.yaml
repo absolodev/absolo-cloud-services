@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: absolo-control-plane
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/absolo/absolo-cloud-services'
+    path: infra/helm/charts/control-plane
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: absolo-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

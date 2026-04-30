@@ -18,6 +18,7 @@ import {
   integer,
   boolean,
   jsonb,
+  varchar,
   uniqueIndex,
   index,
   primaryKey,
@@ -144,10 +145,7 @@ export const environments = projectsSchema.table(
     deletedAt: timestamp('deleted_at', { withTimezone: true }),
   },
   (t) => ({
-    projectSlugUnique: uniqueIndex('environments_project_slug_unique').on(
-      t.projectId,
-      t.slug,
-    ),
+    projectSlugUnique: uniqueIndex('environments_project_slug_unique').on(t.projectId, t.slug),
     projectIdx: index('environments_project_idx').on(t.projectId),
   }),
 );
@@ -219,10 +217,7 @@ export const configEntries = projectsSchema.table(
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => ({
-    envKeyUnique: uniqueIndex('config_entries_env_key_unique').on(
-      t.environmentId,
-      t.key,
-    ),
+    envKeyUnique: uniqueIndex('config_entries_env_key_unique').on(t.environmentId, t.key),
     projectKeySharedUnique: uniqueIndex('config_entries_project_shared_key_unique')
       .on(t.projectId, t.key)
       .where(sql`environment_id IS NULL`),
@@ -253,9 +248,30 @@ export const configFiles = projectsSchema.table(
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => ({
-    envPathUnique: uniqueIndex('config_files_env_path_unique').on(
-      t.environmentId,
-      t.path,
-    ),
+    envPathUnique: uniqueIndex('config_files_env_path_unique').on(t.environmentId, t.path),
   }),
 );
+
+// -----------------------------------------------------------------------------
+// MESSAGE QUEUE & TRANSACTIONS (Phase 0 -> Phase 1 Outbox & Sagas)
+// -----------------------------------------------------------------------------
+
+export const mq = pgSchema('mq');
+
+export const outbox = mq.table('outbox', {
+  id: varchar('id', { length: 32 }).primaryKey(),
+  topic: varchar('topic', { length: 255 }).notNull(),
+  payload: jsonb('payload').notNull(),
+  publishedAt: timestamp('published_at', { withTimezone: true }),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+});
+
+export const sagaState = mq.table('saga_state', {
+  id: varchar('id', { length: 32 }).primaryKey(),
+  sagaType: varchar('saga_type', { length: 255 }).notNull(),
+  status: varchar('status', { length: 50 }).notNull(),
+  context: jsonb('context').notNull(),
+  error: text('error'),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+});

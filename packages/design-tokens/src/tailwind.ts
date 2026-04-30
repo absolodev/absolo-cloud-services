@@ -1,37 +1,49 @@
 /**
- * Tailwind preset that wires the Absolo design tokens into Tailwind v4's `@theme` directive.
- * Apps add this in their CSS:
- *   @import "tailwindcss";
- *   @import "@absolo/design-tokens/css";
- *   @plugin "@absolo/design-tokens/tailwind";
+ * Tailwind preset wired for high-contrast DigitalOcean / Cursor-like theme
  */
-import { colors, radii, space, typography } from './tokens.js';
-
 export const tailwindPreset = {
   theme: {
     extend: {
       colors: {
-        brand: colors.brand,
-        accent: colors.accent,
-        success: colors.semantic.success,
-        warning: colors.semantic.warning,
-        danger: colors.semantic.danger,
-        info: colors.semantic.info,
-        bg: 'var(--absolo-bg)',
-        'bg-subtle': 'var(--absolo-bg-subtle)',
-        'bg-muted': 'var(--absolo-bg-muted)',
-        'bg-elevated': 'var(--absolo-bg-elevated)',
-        fg: 'var(--absolo-fg)',
-        'fg-muted': 'var(--absolo-fg-muted)',
-        'fg-subtle': 'var(--absolo-fg-subtle)',
-        border: 'var(--absolo-border)',
-        'border-strong': 'var(--absolo-border-strong)',
-        ring: 'var(--absolo-ring)',
+        border: 'var(--border)',
+        input: 'var(--input)',
+        ring: 'var(--ring)',
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
+        primary: {
+          DEFAULT: 'var(--primary)',
+          foreground: 'var(--primary-foreground)',
+        },
+        secondary: {
+          DEFAULT: 'var(--secondary)',
+          foreground: 'var(--secondary-foreground)',
+        },
+        destructive: {
+          DEFAULT: 'var(--destructive)',
+          foreground: 'var(--destructive-foreground)',
+        },
+        muted: {
+          DEFAULT: 'var(--muted)',
+          foreground: 'var(--muted-foreground)',
+        },
+        accent: {
+          DEFAULT: 'var(--accent)',
+          foreground: 'var(--accent-foreground)',
+        },
+        popover: {
+          DEFAULT: 'var(--popover)',
+          foreground: 'var(--popover-foreground)',
+        },
+        card: {
+          DEFAULT: 'var(--card)',
+          foreground: 'var(--card-foreground)',
+        },
       },
-      borderRadius: radii,
-      spacing: space,
-      fontFamily: { sans: typography.fontSans, mono: typography.fontMono },
-      fontSize: typography.size,
+      borderRadius: {
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
+      },
     },
   },
 };

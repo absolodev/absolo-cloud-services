@@ -24,12 +24,26 @@
     "type-check": "turbo run type-check",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "clean": "turbo run clean && rm -rf node_modules .turbo"
+    "clean": "turbo run clean && rm -rf node_modules .turbo",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.10",
     "prettier": "^3.4.0",
     "turbo": "^2.3.0",
     "typescript": "^5.7.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write"
+    ],
+    "*.{json,yaml,yml,md}": [
+      "prettier --write"
+    ],
+    "crates/**/*.rs": [
+      "cargo fmt --"
+    ]
   },
   "pnpm": {
     "overrides": {

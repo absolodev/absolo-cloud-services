@@ -20,6 +20,8 @@ import fastifyHelmet from '@fastify/helmet';
 import fastifyCookie from '@fastify/cookie';
 import { nanoid } from 'nanoid';
 
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
 import { AppModule } from './app.module.js';
 import { loadAppConfig } from './config/app-config.js';
 
@@ -63,7 +65,9 @@ async function bootstrap() {
   });
 
   app.enableCors({
-    origin: config.CORS_ORIGINS.split(',').map((s) => s.trim()).filter(Boolean),
+    origin: config.CORS_ORIGINS.split(',')
+      .map((s) => s.trim())
+      .filter(Boolean),
     credentials: true,
     exposedHeaders: ['x-request-id'],
   });
@@ -74,6 +78,15 @@ async function bootstrap() {
   adapter.getInstance().addHook('onSend', async (req, reply) => {
     reply.header('x-request-id', req.id);
   });
+
+  const swOptions = new DocumentBuilder()
+    .setTitle('Absolo Cloud API')
+    .setDescription('Control plane REST definitions.')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, swOptions);
+  SwaggerModule.setup('api/docs', app, document);
 
   await app.listen(config.PORT, config.HOST);
   logger.log(`control-plane listening on http://${config.HOST}:${config.PORT}`);
