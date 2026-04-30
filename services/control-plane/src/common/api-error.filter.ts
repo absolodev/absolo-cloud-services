@@ -60,7 +60,7 @@ export class ApiErrorFilter implements ExceptionFilter {
         code: ERROR_CODES.VALIDATION_FAILED,
         requestId,
         errors: exception.zodError.issues.map((issue) => ({
-          path: issue.path.map((p) => (typeof p === 'symbol' ? p.toString() : p)),
+          path: issue.path.map((p) => (typeof p === 'number' ? p : String(p))),
           code: issue.code,
           message: issue.message,
         })),

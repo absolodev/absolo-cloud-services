@@ -12,6 +12,7 @@
  * so it can inject the logger.
  */
 import 'reflect-metadata';
+import type { IncomingMessage } from 'node:http';
 import { NestFactory } from '@nestjs/core';
 import { Logger } from '@nestjs/common';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
@@ -40,7 +41,7 @@ async function bootstrap() {
      * Use header-supplied request-id when present, otherwise generate.
      * The id propagates to the global error filter and every log line.
      */
-    genReqId: (req) => {
+    genReqId: (req: IncomingMessage) => {
       const incoming = req.headers['x-request-id'];
       if (typeof incoming === 'string' && incoming.length > 0 && incoming.length < 200) {
         return incoming;

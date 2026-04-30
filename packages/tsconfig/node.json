@@ -10,8 +10,8 @@
     "verbatimModuleSyntax": false,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "outDir": "dist",
-    "rootDir": "src",
+    "outDir": "${configDir}/dist",
+    "rootDir": "${configDir}/src",
     "types": ["node"]
   }
 }

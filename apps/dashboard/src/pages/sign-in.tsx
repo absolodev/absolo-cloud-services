@@ -83,12 +83,13 @@ export function SignInPage() {
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
-                <Link
-                  to="/forgot-password"
+                {/* Route added once the password-reset flow ships (plan 04). */}
+                <a
+                  href="/forgot-password"
                   className="text-xs text-fg-muted hover:text-fg"
                 >
                   Forgot?
-                </Link>
+                </a>
               </div>
               <Input
                 id="password"

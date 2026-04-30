@@ -11,9 +11,9 @@ export class AbsoloApiError extends Error {
   readonly status: number;
   readonly code: ErrorCode | string;
   readonly type: string;
-  readonly detail?: string;
-  readonly requestId?: string;
-  readonly issues?: readonly ApiErrorIssue[];
+  readonly detail: string | undefined;
+  readonly requestId: string | undefined;
+  readonly issues: readonly ApiErrorIssue[] | undefined;
 
   constructor(payload: ApiError) {
     super(payload.title);
@@ -52,7 +52,7 @@ export class AbsoloApiError extends Error {
  * before any HTTP response was received.
  */
 export class AbsoloNetworkError extends Error {
-  readonly cause?: unknown;
+  override readonly cause: unknown;
   constructor(message: string, cause?: unknown) {
     super(message);
     this.name = 'AbsoloNetworkError';

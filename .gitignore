@@ -59,6 +59,7 @@ infra/helm/**/Chart.lock
 .eslintcache
 .stylelintcache
 .parcel-cache/
+*.tsbuildinfo
 
 # IDE-specific
 *.swp

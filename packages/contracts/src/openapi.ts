@@ -1,5 +1,6 @@
 import { OpenAPIRegistry, OpenApiGeneratorV31 } from '@asteasolutions/zod-to-openapi';
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
+import type { OpenAPIObject } from 'openapi3-ts/oas31';
 import { z } from 'zod';
 
 import { IdSchema, SlugSchema, TimestampSchema, PageMetaSchema } from './common/primitives.js';
@@ -92,7 +93,7 @@ registry.register('ConfigFile', ConfigFileSchema);
 registry.register('ReplaceConfigFilesRequest', ReplaceConfigFilesRequestSchema);
 
 /** Build the OpenAPI 3.1 document from the shared registry. */
-export function buildOpenApiDocument() {
+export function buildOpenApiDocument(): OpenAPIObject {
   const generator = new OpenApiGeneratorV31(registry.definitions);
   return generator.generateDocument({
     openapi: '3.1.0',

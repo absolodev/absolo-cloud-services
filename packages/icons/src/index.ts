@@ -30,6 +30,9 @@ export {
   Info,
   XCircle,
   Loader2,
+  Activity,
+  ShieldCheck,
+  Zap,
 
   // Resources / domains
   Boxes,
