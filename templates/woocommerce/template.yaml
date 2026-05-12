@@ -1,7 +1,34 @@
-id: 'woocommerce'
-name: 'WooCommerce'
-description: 'WordPress eCommerce made simple'
-version: '1.0.0'
-tags: ['php', 'wordpress', 'ecommerce', 'store']
-ports:
-  - 80
+id: woocommerce
+version: 8.6.1-absolo.1
+name: WooCommerce
+category: ecommerce
+description: 'A complete online store on WordPress + WooCommerce.'
+runtime:
+  pod:
+    image: woocommerce/woocommerce:8.6.1
+    ports: [80]
+    env_required:
+      - WORDPRESS_DB_HOST
+      - WORDPRESS_DB_NAME
+      - WORDPRESS_DB_USER
+      - WORDPRESS_DB_PASSWORD
+    persistent_volume:
+      mount: /var/www/html
+      default_size_gb: 10
+      min_size_gb: 5
+  managed_services:
+    - kind: mysql
+      name: woo-db
+      size_default: M
+      bind_env_prefix: WORDPRESS_DB
+sizes_allowed: [S, M, L, XL]
+default_size: M
+inputs:
+  - key: site_title
+    type: string
+    required: true
+  - key: admin_email
+    type: email
+    required: true
+upgrade_policy: snapshot_then_upgrade
+backups: { interval: 12h, retain: 14 }

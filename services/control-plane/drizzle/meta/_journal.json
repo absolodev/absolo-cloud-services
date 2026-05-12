@@ -15,6 +15,20 @@
       "when": 1777577059905,
       "tag": "0001_adorable_onslaught",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1777584664384,
+      "tag": "0002_omniscient_ted_forrester",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1777665238311,
+      "tag": "0003_zippy_shatterstar",
+      "breakpoints": true
     }
   ]
 }

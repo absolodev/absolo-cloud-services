@@ -62,9 +62,7 @@ export function ProjectsListPage() {
 
       <div className="mt-8">
         {projectsQuery.isPending ? <ListSkeleton /> : null}
-        {projectsQuery.isError ? (
-          <ErrorState message={projectsQuery.error.message} />
-        ) : null}
+        {projectsQuery.isError ? <ErrorState message={projectsQuery.error.message} /> : null}
         {projectsQuery.data ? (
           projectsQuery.data.data.length === 0 ? (
             <EmptyState />
@@ -83,18 +81,12 @@ export function ProjectsListPage() {
 
 function ProjectCard({ project }: { project: Project }) {
   return (
-    <Link
-      to="/projects/$projectId"
-      params={{ projectId: project.id }}
-      className="group block"
-    >
+    <Link to="/projects/$projectId" params={{ projectId: project.id }} className="group block">
       <Card className="h-full transition-shadow group-hover:shadow-md group-hover:border-brand-500/40">
         <CardHeader className="flex-row items-start justify-between gap-4 space-y-0">
           <div className="space-y-1">
             <CardTitle className="text-base">{project.name}</CardTitle>
-            <CardDescription className="font-mono text-xs">
-              {project.slug}
-            </CardDescription>
+            <CardDescription className="font-mono text-xs">{project.slug}</CardDescription>
           </div>
           <div className="flex items-center gap-1.5">
             <Badge variant={project.status === 'active' ? 'success' : 'secondary'}>
@@ -166,8 +158,15 @@ function CreateProjectDialog({ orgId }: { orgId: string }) {
       name: '',
       description: '',
       kind: 'app' as ProjectKind,
+      region: 'eu-fra',
     },
   });
+
+  const regionsQuery = useQuery({
+    queryKey: ['regions'],
+    queryFn: () => api.platform.listRegions(),
+  });
+  const regions = regionsQuery.data?.data ?? [];
 
   const createMutation = useMutation({
     mutationFn: (req: CreateProjectRequest) => api.projects.create(orgId, req),
@@ -220,10 +219,23 @@ function CreateProjectDialog({ orgId }: { orgId: string }) {
               aria-invalid={!!form.formState.errors.slug}
             />
             {form.formState.errors.slug && (
-              <p className="text-xs text-danger-600">
-                {form.formState.errors.slug.message}
-              </p>
+              <p className="text-xs text-danger-600">{form.formState.errors.slug.message}</p>
             )}
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="region">Region</Label>
+            <select
+              id="region"
+              className="w-full rounded-md border border-border/60 bg-bg px-3 py-2 text-sm"
+              {...form.register('region')}
+            >
+              {regions.map((r: any) => (
+                <option key={r.code} value={r.code}>
+                  {r.name} ({r.code})
+                </option>
+              ))}
+              {regions.length === 0 && <option value="eu-fra">Europe (Frankfurt)</option>}
+            </select>
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="description">Description (optional)</Label>
@@ -234,11 +246,7 @@ function CreateProjectDialog({ orgId }: { orgId: string }) {
           <Button variant="ghost" type="button" onClick={() => setOpen(false)}>
             Cancel
           </Button>
-          <Button
-            type="submit"
-            form="create-project-form"
-            loading={createMutation.isPending}
-          >
+          <Button type="submit" form="create-project-form" loading={createMutation.isPending}>
             Create
           </Button>
         </DialogFooter>

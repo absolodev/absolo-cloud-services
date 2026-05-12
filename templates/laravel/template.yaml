@@ -1,16 +1,36 @@
-id: 'laravel'
-name: 'Laravel 11'
-description: 'PHP web application framework with sleek, elegant syntax.'
-version: '1.0.0'
-tags: ['php', 'laravel', 'backend', 'fullstack']
-ports:
-  - 80
-env:
-  - name: APP_ENV
-    description: 'Application Environment'
-    default: 'production'
-    required: false
-  - name: APP_KEY
-    description: 'Application Key'
-    default: ''
+id: laravel
+version: 11.0.0-absolo.1
+name: Laravel
+category: framework
+description: 'Laravel application boilerplate with Redis and Postgres.'
+runtime:
+  pod:
+    image: absolut-laravel-base:11
+    ports: [8000]
+    env_required:
+      - DB_HOST
+      - DB_PORT
+      - DB_DATABASE
+      - DB_USERNAME
+      - DB_PASSWORD
+      - APP_KEY
+    persistent_volume:
+      mount: /var/www/html/storage
+      default_size_gb: 2
+      min_size_gb: 1
+  managed_services:
+    - kind: postgres
+      name: app-db
+      size_default: S
+      bind_env_prefix: DB
+    - kind: redis
+      name: app-cache
+      size_default: XS
+      bind_env_prefix: REDIS
+sizes_allowed: [XS, S, M, L]
+default_size: S
+inputs:
+  - key: app_name
+    type: string
     required: true
+upgrade_policy: rebuild

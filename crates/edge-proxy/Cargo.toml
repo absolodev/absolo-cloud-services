@@ -20,3 +20,5 @@ async-nats = "0.47.0"
 tokio-stream = "0.1.18"
 serde.workspace = true
 serde_json.workspace = true
+dashmap = "6.1.0"
+ipnet = "2.12.0"

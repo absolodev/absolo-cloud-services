@@ -4,12 +4,22 @@ import { subdomains, customDomains } from '../../db/schema.js';
 import { newId } from '../../common/ids.js';
 import { eq, and } from 'drizzle-orm';
 import { randomBytes } from 'crypto';
+import * as k8s from '@kubernetes/client-node';
 
 @Injectable()
 export class DomainsService {
   private readonly logger = new Logger(DomainsService.name);
+  private k8sObjectApi?: k8s.KubernetesObjectApi;
 
-  constructor(@Inject(DB) private readonly db: Database) {}
+  constructor(@Inject(DB) private readonly db: Database) {
+    const kc = new k8s.KubeConfig();
+    try {
+      kc.loadFromDefault();
+      this.k8sObjectApi = kc.makeApiClient(k8s.KubernetesObjectApi);
+    } catch {
+      this.logger.warn('Could not load KubeConfig, cluster operations will fail');
+    }
+  }
 
   async allocateSubdomain(orgId: string, appId: string, slug: string) {
     const id = newId('sub');
@@ -28,7 +38,6 @@ export class DomainsService {
 
     this.logger.log(`Allocated subdomain ${fullHost} to app ${appId}`);
 
-    // TODO: Publish event to update edge-proxy NATS KV routing
     return result[0];
   }
 
@@ -57,7 +66,31 @@ export class DomainsService {
       })
       .returning();
 
-    // TODO: Kick off verification saga with cert-manager
+    this.logger.log(`Added custom domain ${domainName}, requesting cert-manager Certificate`);
+
+    if (this.k8sObjectApi) {
+      try {
+        await this.k8sObjectApi.create({
+          apiVersion: 'cert-manager.io/v1',
+          kind: 'Certificate',
+          metadata: {
+            name: `cert-${id}`,
+            namespace: 'default',
+          },
+          spec: {
+            secretName: `tls-${id}`,
+            issuerRef: {
+              name: 'letsencrypt-prod',
+              kind: 'ClusterIssuer',
+            },
+            dnsNames: [domainName],
+          },
+        });
+      } catch (err) {
+        this.logger.error(`Failed to create cert-manager Certificate for ${domainName}`, err);
+      }
+    }
+
     return result[0];
   }
 }

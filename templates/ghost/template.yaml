@@ -1,27 +1,32 @@
-id: 'ghost'
-name: 'Ghost CMS'
-description: 'Professional publishing platform for blogs, newsletters, and creators'
-version: '1.0.0'
-tags: ['nodejs', 'ghost', 'cms', 'blog']
-ports:
-  - 2368
-env:
-  - name: url
-    description: 'Your site URL (e.g. https://myblog.com)'
+id: ghost
+version: 5.80.0-absolo.1
+name: Ghost
+category: cms
+description: 'A fast, modern open source publishing platform.'
+runtime:
+  pod:
+    image: ghost:5.80.0-alpine
+    ports: [2368]
+    env_required:
+      - database__client
+      - database__connection__host
+      - database__connection__user
+      - database__connection__password
+      - database__connection__database
+    persistent_volume:
+      mount: /var/lib/ghost/content
+      default_size_gb: 5
+      min_size_gb: 1
+  managed_services:
+    - kind: mysql
+      name: ghost-db
+      size_default: S
+      bind_env_prefix: database__connection
+sizes_allowed: [XS, S, M, L]
+default_size: S
+inputs:
+  - key: url
+    type: string
     required: true
-  - name: database__client
-    description: 'Database client (mysql)'
-    default: 'mysql'
-    required: true
-  - name: database__connection__host
-    description: 'Database host'
-    required: true
-  - name: database__connection__user
-    description: 'Database user'
-    required: true
-  - name: database__connection__password
-    description: 'Database password'
-    required: true
-  - name: database__connection__database
-    description: 'Database name'
-    required: true
+upgrade_policy: snapshot_then_upgrade
+backups: { interval: 24h, retain: 7 }

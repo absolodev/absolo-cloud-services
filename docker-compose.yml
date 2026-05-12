@@ -29,12 +29,12 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-absolo}
       POSTGRES_DB: ${POSTGRES_DB:-absolo}
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - '${POSTGRES_PORT:-5432}:5432'
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./infra/postgres/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-absolo} -d ${POSTGRES_DB:-absolo}"]
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-absolo} -d ${POSTGRES_DB:-absolo}']
       interval: 5s
       timeout: 3s
       retries: 10
@@ -44,11 +44,11 @@ services:
     container_name: absolo-redis
     restart: unless-stopped
     ports:
-      - "${REDIS_PORT:-6379}:6379"
+      - '${REDIS_PORT:-6379}:6379'
     volumes:
       - redis-data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ['CMD', 'redis-cli', 'ping']
       interval: 5s
       timeout: 3s
       retries: 10
@@ -57,14 +57,14 @@ services:
     image: nats:2.10-alpine
     container_name: absolo-nats
     restart: unless-stopped
-    command: ["-js", "-m", "8222"]
+    command: ['-js', '-m', '8222']
     ports:
-      - "${NATS_PORT:-4222}:4222"
-      - "${NATS_MONITOR_PORT:-8222}:8222"
+      - '${NATS_PORT:-4222}:4222'
+      - '${NATS_MONITOR_PORT:-8222}:8222'
     volumes:
       - nats-data:/data
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8222/healthz"]
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:8222/healthz']
       interval: 5s
       timeout: 3s
       retries: 10
@@ -74,8 +74,45 @@ services:
     container_name: absolo-mailhog
     restart: unless-stopped
     ports:
-      - "${MAILHOG_SMTP_PORT:-1025}:1025" # SMTP
-      - "${MAILHOG_UI_PORT:-8025}:8025"   # Web UI
+      - '${MAILHOG_SMTP_PORT:-1025}:1025' # SMTP
+      - '${MAILHOG_UI_PORT:-8025}:8025' # Web UI
+
+  victoriametrics:
+    image: victoriametrics/victoria-metrics:v1.109.1
+    container_name: absolo-vm
+    restart: unless-stopped
+    ports:
+      - '8428:8428'
+    command:
+      - '--storageDataPath=/vmetrics-data'
+      - '--retentionPeriod=1'
+    volumes:
+      - vm-data:/vmetrics-data
+      - ./infra/vmagent.yml:/etc/prometheus/prometheus.yml:ro
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:8428/health']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  vmagent:
+    image: victoriametrics/vmagent:v1.109.1
+    container_name: absolo-vmagent
+    restart: unless-stopped
+    command:
+      - '-promscrape.config=/etc/prometheus/prometheus.yml'
+      - '-remoteWrite.url=http://victoriametrics:8428/api/v1/write'
+    volumes:
+      - ./infra/vmagent.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - victoriametrics
+
+  node_exporter:
+    image: prom/node-exporter:v1.8.2
+    container_name: absolo-node-exporter
+    restart: unless-stopped
+    ports:
+      - '9100:9100'
 
 volumes:
   postgres-data:
@@ -84,3 +121,5 @@ volumes:
     name: absolo-redis-data
   nats-data:
     name: absolo-nats-data
+  vm-data:
+    name: absolo-vm-data

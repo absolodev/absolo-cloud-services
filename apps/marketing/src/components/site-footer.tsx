@@ -8,7 +8,7 @@ const COLUMNS = [
       { href: '/pricing', label: 'Pricing' },
       { href: '/docs', label: 'Docs' },
       { href: '/changelog', label: 'Changelog' },
-      { href: '/status', label: 'Status' },
+      { href: 'https://status.absolo.cloud', label: 'Status' },
     ],
   },
   {
@@ -22,10 +22,10 @@ const COLUMNS = [
   {
     title: 'Legal',
     links: [
-      { href: '/legal/terms', label: 'Terms' },
+      { href: '/legal/tos', label: 'Terms' },
       { href: '/legal/privacy', label: 'Privacy' },
       { href: '/legal/dpa', label: 'DPA' },
-      { href: '/legal/sla', label: 'SLA' },
+      { href: '/legal/aup', label: 'AUP' },
     ],
   },
 ] as const;
@@ -40,8 +40,7 @@ export function SiteFooter() {
             <span className="font-semibold tracking-tight">Absolo Cloud</span>
           </div>
           <p className="max-w-xs text-sm text-fg-muted">
-            A modern PaaS without the lock-in tax. EU-first, open contracts,
-            self-hostable.
+            A modern PaaS without the lock-in tax. EU-first, open contracts, self-hostable.
           </p>
         </div>
         {COLUMNS.map((col) => (

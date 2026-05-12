@@ -14,6 +14,11 @@ import { OutboxModule } from './modules/outbox/outbox.module.js';
 import { AppsModule } from './modules/apps/apps.module.js';
 import { OrchestratorService } from './modules/orchestrator/orchestrator.service.js';
 import { DomainsModule } from './modules/domains/domains.module.js';
+import { DatabasesModule } from './modules/databases/databases.module.js';
+import { StorageModule } from './modules/storage/storage.module.js';
+import { BindingsModule } from './modules/bindings/bindings.module.js';
+import { PlatformModule } from './modules/platform/platform.module.js';
+import { EnterpriseModule } from './modules/enterprise/enterprise.module.js';
 
 /**
  * Root module wiring every domain module + cross-cutting concerns.
@@ -38,6 +43,11 @@ import { DomainsModule } from './modules/domains/domains.module.js';
     OutboxModule,
     AppsModule,
     DomainsModule,
+    DatabasesModule,
+    StorageModule,
+    BindingsModule,
+    PlatformModule,
+    EnterpriseModule,
   ],
   providers: [
     {

@@ -1,11 +1,24 @@
 import { Link, Outlet, useRouterState } from '@tanstack/react-router';
 import { AbsoloMark } from '@absolo/icons/brand';
-import { Activity, AlertTriangle, FileText, Server, Users, type LucideIcon } from '@absolo/icons';
+import {
+  Activity,
+  AlertTriangle,
+  Building2,
+  FileText,
+  Server,
+  Users,
+  DollarSign,
+  Shield,
+  type LucideIcon,
+} from '@absolo/icons';
 
 const NAV: { to: string; label: string; icon: LucideIcon }[] = [
   { to: '/', label: 'Overview', icon: Activity },
   { to: '/fleet', label: 'Fleet', icon: Server },
+  { to: '/enterprise', label: 'Enterprise', icon: Building2 },
   { to: '/orgs', label: 'Organisations', icon: Users },
+  { to: '/abuse', label: 'Abuse', icon: Shield },
+  { to: '/finance', label: 'Finance', icon: DollarSign },
   { to: '/audit', label: 'Audit log', icon: FileText },
 ];
 

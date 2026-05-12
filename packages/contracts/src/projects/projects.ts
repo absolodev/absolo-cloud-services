@@ -10,12 +10,7 @@ import { IdSchema, SlugSchema, TimestampSchema } from '../common/primitives.js';
 export const ProjectKindSchema = z.enum(['app', 'site', 'mixed']);
 export type ProjectKind = z.infer<typeof ProjectKindSchema>;
 
-export const ProjectStatusSchema = z.enum([
-  'active',
-  'paused',
-  'archived',
-  'pending_deletion',
-]);
+export const ProjectStatusSchema = z.enum(['active', 'paused', 'archived', 'pending_deletion']);
 export type ProjectStatus = z.infer<typeof ProjectStatusSchema>;
 
 export const ProjectSchema = z
@@ -28,7 +23,7 @@ export const ProjectSchema = z
     kind: ProjectKindSchema,
     status: ProjectStatusSchema,
     /** Region the project is pinned to (immutable post-creation). */
-    region: z.enum(['eu-central', 'us-east', 'apac-sg']),
+    region: z.string(),
     createdAt: TimestampSchema,
     updatedAt: TimestampSchema,
   })

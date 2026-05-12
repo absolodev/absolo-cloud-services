@@ -11,6 +11,9 @@ import { OverviewPage } from './pages/overview';
 import { FleetPage } from './pages/fleet';
 import { OrgsPage } from './pages/orgs';
 import { AuditPage } from './pages/audit';
+import { AbusePage } from './pages/abuse';
+import { FinancePage } from './pages/finance';
+import { EnterpriseAdminPage } from './pages/enterprise';
 
 const rootRoute = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   component: () => <Outlet />,
@@ -46,8 +49,34 @@ const auditRoute = createRoute({
   component: AuditPage,
 });
 
+const abuseRoute = createRoute({
+  getParentRoute: () => shellRoute,
+  path: '/abuse',
+  component: AbusePage,
+});
+
+const financeRoute = createRoute({
+  getParentRoute: () => shellRoute,
+  path: '/finance',
+  component: FinancePage,
+});
+
+const enterpriseRoute = createRoute({
+  getParentRoute: () => shellRoute,
+  path: '/enterprise',
+  component: EnterpriseAdminPage,
+});
+
 const routeTree = rootRoute.addChildren([
-  shellRoute.addChildren([overviewRoute, fleetRoute, orgsRoute, auditRoute]),
+  shellRoute.addChildren([
+    overviewRoute,
+    fleetRoute,
+    orgsRoute,
+    abuseRoute,
+    financeRoute,
+    enterpriseRoute,
+    auditRoute,
+  ]),
 ]);
 
 export const router = createRouter({

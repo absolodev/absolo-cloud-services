@@ -1,9 +1,22 @@
 import { Link, Outlet, useRouterState } from '@tanstack/react-router';
 import { AbsoloMark } from '@absolo/icons/brand';
-import { Boxes, CreditCard, KeyRound, Settings, Users, type LucideIcon } from '@absolo/icons';
+import {
+  Boxes,
+  CreditCard,
+  Database,
+  HardDrive,
+  KeyRound,
+  Settings,
+  Users,
+  Server,
+  type LucideIcon,
+} from '@absolo/icons';
 
 const NAV: { to: string; label: string; icon: LucideIcon }[] = [
   { to: '/projects', label: 'Projects', icon: Boxes },
+  { to: '/databases', label: 'Databases', icon: Database },
+  { to: '/storage', label: 'Storage', icon: HardDrive },
+  { to: '/infrastructure', label: 'Infrastructure', icon: Server },
   { to: '/team', label: 'Team', icon: Users },
   { to: '/api-keys', label: 'API keys', icon: KeyRound },
   { to: '/billing', label: 'Billing', icon: CreditCard },
@@ -44,9 +57,9 @@ export function AppShell() {
         </nav>
 
         <div className="border-t border-border p-4 text-xs font-medium text-muted-foreground">
-          <span className="block text-foreground">Absolo Cloud \u00b7 Phase 1</span>
+          <span className="block text-foreground truncate">My Organisation</span>
           <span className="block mt-1">
-            Region: <span className="text-primary">eu-central</span>
+            Region: <span className="text-primary">eu-fra</span>
           </span>
         </div>
       </aside>

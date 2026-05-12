@@ -22,6 +22,13 @@ import { OrgsClient } from './clients/orgs.js';
 import { ProjectsClient } from './clients/projects.js';
 import { EnvironmentsClient } from './clients/environments.js';
 import { ConfigClient } from './clients/config.js';
+import { AppsClient } from './clients/apps.js';
+import { BillingClient } from './clients/billing.js';
+import { DatabasesClient } from './clients/databases.js';
+import { StorageClient } from './clients/storage.js';
+import { BindingsClient } from './clients/bindings.js';
+import { PlatformClient } from './clients/platform.js';
+import { EnterpriseClient } from './clients/enterprise.client.js';
 
 export class AbsoloClient {
   readonly http: AbsoloHttp;
@@ -30,6 +37,13 @@ export class AbsoloClient {
   readonly projects: ProjectsClient;
   readonly environments: EnvironmentsClient;
   readonly config: ConfigClient;
+  readonly apps: AppsClient;
+  readonly billing: BillingClient;
+  readonly databases: DatabasesClient;
+  readonly storage: StorageClient;
+  readonly bindings: BindingsClient;
+  readonly platform: PlatformClient;
+  readonly enterprise: EnterpriseClient;
 
   constructor(options: AbsoloClientOptions = {}) {
     this.http = new AbsoloHttp(options);
@@ -38,6 +52,13 @@ export class AbsoloClient {
     this.projects = new ProjectsClient(this.http);
     this.environments = new EnvironmentsClient(this.http);
     this.config = new ConfigClient(this.http);
+    this.apps = new AppsClient(this.http);
+    this.billing = new BillingClient(this.http);
+    this.databases = new DatabasesClient(this.http);
+    this.storage = new StorageClient(this.http);
+    this.bindings = new BindingsClient(this.http);
+    this.platform = new PlatformClient(this.http);
+    this.enterprise = new EnterpriseClient(this.http);
   }
 }
 

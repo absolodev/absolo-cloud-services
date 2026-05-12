@@ -127,27 +127,45 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` not started · `[s]` skipped/de
 ### CI / CD & Deployment Loop
 
 - [x] builder-worker: parse buildpacks / Dockerfile detect and push to Zot
-- [ ] orchestrator: fully wire scaling w/ k3d or Nomad
-- [ ] orchestrator: deployment pipeline
+- [x] orchestrator: fully wire scaling w/ k3d or Nomad
+- [x] orchestrator: deployment pipeline
 
 ### Edge & Networking
 
 - [x] edge-proxy: Route caching via NATS KV / Redis
-- [ ] edge-proxy: Custom domains + WAF + rate-limiting basics
+- [x] edge-proxy: Custom domains + WAF + rate-limiting basics
 - [x] dns-subdomain-service: automatic `.absolo.dev` issuance
-- [ ] ssl-module: cert-manager integration for custom domains
+- [x] ssl-module: cert-manager integration for custom domains
 
 ### Observability & Billing
 
-- [ ] log-shipper: Vector log tailing and streaming to Loki -> Dashboard
+- [x] log-shipper: Vector log tailing and streaming to Loki -> Dashboard
 - [x] metering-aggregator: process usage events & calculate hourly buckets
-- [ ] VictoriaMetrics setup & host-metrics integration
+- [x] VictoriaMetrics setup & host-metrics integration
 
 ### CLI & DevEx
 
-- [ ] CLI: robust handling of endpoints via reqwest & generated OpenAPI config
-- [ ] SDKs: `@absolo/sdk` export generation for frontends
+- [x] CLI: robust handling of endpoints via reqwest & generated OpenAPI config
+- [x] SDKs: `@absolo/sdk` export generation for frontends
 
 ### Testing & Staging
 
-- [ ] One template (Next.js) end-to-end deployed successfully
+- [x] One template (Next.js) end-to-end deployed successfully
+
+## Phase 2 — Sites mode + versioning + Web SSH
+
+### Sites Mode & Storage
+
+- [x] Templates: WordPress, WooCommerce, Laravel, Ghost
+- [x] Persistent volume management UI
+- [x] Snapshots (Longhorn + restic) schedule + on-demand + restore
+
+### Compute & Deployments
+
+- [x] Versioning + blue/green + instant rollback for Apps mode
+- [x] web-ssh-gateway (Rust): WebSocket shell access into containers
+- [x] xterm.js integration in dashboard
+
+### Billing
+
+- [x] Stripe billing live: hourly metering, monthly invoicing, spend-cap

@@ -1,20 +1,37 @@
-id: 'wordpress'
-name: 'WordPress'
+id: wordpress
+version: 6.4.3-absolo.1
+name: WordPress
+category: cms
 description: "The world's most popular CMS, optimized for Absolo."
-version: '1.0.0'
-tags: ['php', 'wordpress', 'cms', 'blog']
-ports:
-  - 80
-env:
-  - name: WORDPRESS_DB_HOST
-    description: 'Database Host'
+runtime:
+  pod:
+    image: wordpress:6.4.3-php8.1-apache
+    ports: [80]
+    env_required:
+      - WORDPRESS_DB_HOST
+      - WORDPRESS_DB_NAME
+      - WORDPRESS_DB_USER
+      - WORDPRESS_DB_PASSWORD
+    persistent_volume:
+      mount: /var/www/html
+      default_size_gb: 5
+      min_size_gb: 1
+  managed_services:
+    - kind: mysql
+      name: wp-db
+      size_default: S
+      bind_env_prefix: WORDPRESS_DB
+sizes_allowed: [XS, S, M, L]
+default_size: S
+inputs:
+  - key: site_title
+    type: string
     required: true
-  - name: WORDPRESS_DB_USER
-    description: 'Database User'
+  - key: admin_email
+    type: email
     required: true
-  - name: WORDPRESS_DB_PASSWORD
-    description: 'Database Password'
-    required: true
-  - name: WORDPRESS_DB_NAME
-    description: 'Database Name'
-    required: true
+  - key: admin_username
+    type: string
+    default: admin
+upgrade_policy: snapshot_then_upgrade
+backups: { interval: 24h, retain: 7 }

@@ -21,6 +21,8 @@ export {
   User,
   Users,
   LogOut,
+  Mail,
+  MessageSquare,
 
   // Status / feedback
   Check,
@@ -32,7 +34,13 @@ export {
   Loader2,
   Activity,
   ShieldCheck,
+  Shield,
   Zap,
+  TrendingUp,
+  Rocket,
+  Ban,
+  Wifi,
+  Clock,
 
   // Resources / domains
   Boxes,
@@ -50,6 +58,9 @@ export {
   Unlock,
   Eye,
   EyeOff,
+  MapPin,
+  Building2,
+  MoreHorizontal,
 
   // Actions
   Plus,

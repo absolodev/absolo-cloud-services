@@ -11,6 +11,13 @@ import { AppShell } from './components/app-shell';
 import { SignInPage } from './pages/sign-in';
 import { ProjectsListPage } from './pages/projects-list';
 import { ProjectDetailPage } from './pages/project-detail';
+import { BillingPage } from './pages/billing';
+import { DatabasesPage } from './pages/databases';
+import { StoragePage } from './pages/storage';
+import { SettingsPage } from './pages/settings';
+import { TeamPage } from './pages/team';
+import { ApiKeysPage } from './pages/api-keys';
+import { InfrastructurePage } from './pages/infrastructure';
 
 interface RouterContext {
   queryClient: QueryClient;
@@ -51,10 +58,62 @@ const projectDetailRoute = createRoute({
   component: ProjectDetailPage,
 });
 
+const billingRoute = createRoute({
+  getParentRoute: () => appLayoutRoute,
+  path: '/billing',
+  component: BillingPage,
+});
+
+const databasesRoute = createRoute({
+  getParentRoute: () => appLayoutRoute,
+  path: '/databases',
+  component: DatabasesPage,
+});
+
+const storageRoute = createRoute({
+  getParentRoute: () => appLayoutRoute,
+  path: '/storage',
+  component: StoragePage,
+});
+
+const settingsRoute = createRoute({
+  getParentRoute: () => appLayoutRoute,
+  path: '/settings',
+  component: SettingsPage,
+});
+
+const teamRoute = createRoute({
+  getParentRoute: () => appLayoutRoute,
+  path: '/team',
+  component: TeamPage,
+});
+
+const apiKeysRoute = createRoute({
+  getParentRoute: () => appLayoutRoute,
+  path: '/api-keys',
+  component: ApiKeysPage,
+});
+
+const infrastructureRoute = createRoute({
+  getParentRoute: () => appLayoutRoute,
+  path: '/infrastructure',
+  component: InfrastructurePage,
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   signInRoute,
-  appLayoutRoute.addChildren([projectsRoute, projectDetailRoute]),
+  appLayoutRoute.addChildren([
+    projectsRoute,
+    projectDetailRoute,
+    billingRoute,
+    databasesRoute,
+    storageRoute,
+    infrastructureRoute,
+    settingsRoute,
+    teamRoute,
+    apiKeysRoute,
+  ]),
 ]);
 
 export const router = createRouter({
